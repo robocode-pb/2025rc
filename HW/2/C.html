@@ -1,0 +1,241 @@
+<div class="lesson-modal modal" style="display: flex;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-header__header">
+                <p id="lesson-materials-topic-name" class="lesson-materials-topic-name">Космічний шутер: Початок.
+                    Гравець та рівень</p>
+                <span class="close" id="close-lesson-materials">×</span>
+            </div>
+        </div>
+
+        <div class="modal-body" id="lesson-materials-content">
+            <h1 class="ql-align-center"><strong style="background-color: transparent;">Умовні позначення
+                    роздатки</strong></h1>
+            <p class="ql-align-center"><br></p>
+            <p><span style="background-color: transparent;">Інструкція до роздатного матеріалу, або як зрозуміти про що
+                    тут написано:</span></p>
+            <p><span style="background-color: transparent;">📢</span><strong
+                    style="background-color: transparent; color: rgb(230, 0, 0);">Зверни увагу: </strong><strong
+                    style="background-color: transparent;">- </strong><span style="background-color: transparent;">Після
+                    такого значка буде вказано інформацію, на яку варто звернути увагу</span></p>
+            <p><span style="background-color: transparent;">☝</span><strong
+                    style="background-color: transparent; color: rgb(230, 0, 0);">Запам'ятай: </strong><strong
+                    style="background-color: transparent;">- </strong><span style="background-color: transparent;">Після
+                    такого значка буде вказано інформацію, на яку варто вивчити</span></p>
+            <p><span style="background-color: transparent;">🤔</span><strong
+                    style="background-color: transparent; color: rgb(0, 102, 204);">Подумай: - </strong><span
+                    style="background-color: transparent;">Після такого значка буде вказано інформацію, яку варто
+                    обдумати</span></p>
+            <p><span style="background-color: transparent;">🔎</span><strong
+                    style="background-color: transparent; color: rgb(153, 51, 255);">Цікаво: - </strong><span
+                    style="background-color: transparent;">Після такого значка буде вказано якийсь цікавий факт</span>
+            </p>
+
+            <p><strong style="background-color: transparent;">Примітка 1. </strong><span
+                    style="background-color: transparent;">- Після такої позначки буде написано додаткову
+                    інформацію</span></p>
+            <p><br></p>
+            <p><br></p>
+            <p>🤔 <strong style="color: rgb(0, 102, 204);">Подумай:</strong></p>
+            <ol>
+                <li>Яка поведінка імітує зір персонажа?</li>
+                <li>Який параметр поведінки <strong>Line of Sight</strong> визначає, наскільки далеко бачить персонаж?
+                </li>
+                <li>Чим відрізняються дії <strong>Rotate</strong> і <strong>Set angle</strong>?</li>
+                <li>Крізь які об'єкти поведінка <strong>Line of Sight</strong> не бачить?</li>
+            </ol>
+            <p>🎉 <strong style="color: rgb(0, 102, 204);">Відповіді на запитання (виділи мишею, щоб
+                    підглянути):</strong></p>
+            <ol>
+                <li><span style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Поведінка </span><strong
+                        style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Line of Sight</strong><span
+                        style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">.</span></li>
+                <li><span style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Параметр </span><strong
+                        style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Range</strong><span
+                        style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">.</span></li>
+                <li><strong style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Rotate</strong><span
+                        style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);"> задає швидкість повороту,
+                        а </span><strong style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Set
+                        angle</strong><span style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);"> змінює
+                        кут миттєво.</span></li>
+                <li><span style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Через об'єкти з
+                        поведінкою </span><strong
+                        style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Solid</strong><span
+                        style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);"> або вказані як перешкоди в
+                        налаштуваннях.</span></li>
+            </ol>
+            <p><br></p>
+            <p><br></p>
+            <h1 class="ql-align-center">Словник Термінів</h1>
+            <p class="ql-align-center"><br></p>
+            <p><strong>Physics (Фізика)</strong> — механіка, яка дозволяє об'єктам рухатись і взаємодіяти за законами
+                фізики.</p>
+            <p><strong>Density (Щільність)</strong> — &nbsp;це фізична величина, яка показує, скільки маси міститься в
+                одиниці об’єму речовини. В Construct, по суті, визначає вагу об'єкта.</p>
+            <p><strong>Force (Сила)</strong> — тривалий вплив на об'єкт. Можна уявити, що ви тягнете санчата взимку. Ви
+                прикладаєте силу протягом усього часу, як штовхаєте санчата. </p>
+            <p><strong>Impulse (Імпульс)</strong> — миттєвий поштовх об'єкта. Можна уявити, що ви штовхнули сані на
+                льоду. Ви прикладаєте силу (поштовх) один раз, а далі сані ковзають самі, по інерції. </p>
+            <p><strong>Torque (Обертальний момент)</strong> — сила, що викликає обертання об'єкта.</p>
+            <p><strong>Collision mask (Маска зіткнень)</strong> — форма, яка визначає фізичні межі обʼєкта. </p>
+            <p><strong>Damping (Гасіння)</strong> — параметр, що відповідає за сповільнення або обертання об'єкта.</p>
+            <p><br></p>
+            <p><br></p>
+            <h1 class="ql-align-center">Поведінка Physics</h1>
+            <p class="ql-align-center"><br></p>
+            <p><strong>Physics (Фізика)</strong> — це поведінка, яка дозволяє об'єктам рухатися та взаємодіяти за
+                законами фізики. Вона симулює реалістичні сили, зіткнення, обертання та впливи.</p>
+            <p><strong>Переваги використання Physics:</strong></p>
+            <ul>
+                <li>Реалістичне переміщення об'єктів.</li>
+                <li>Створення фізичних взаємодій, таких як поштовхи, падіння чи зіткнення.</li>
+                <li>Можливість досить легко робити цікаві механіки на основі фізики.</li>
+            </ul>
+            <p><br></p>
+            <p><span style="background-color: transparent;">🔎</span><strong
+                    style="color: rgb(153, 51, 255); background-color: transparent;">Цікаво: </strong>Фізична поведінка
+                досить добре підходить для симуляції реального світу, наприклад, руху в космосі чи реакцій на зіткнення.
+            </p>
+            <p><br></p>
+            <p><br></p>
+            <h2 class="ql-align-center">Основні параметри Physics</h2>
+            <p><br></p>
+            <p><img src="https://storage.googleapis.com/rep-edu/Game/Construct/Handuot%20%E2%84%9617/%D0%97%D0%BD%D1%96%D0%BC%D0%BE%D0%BA%20%D0%B5%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-01-07%20%D0%BE%2014.17.58.png"
+                    style="display: inline; margin: 0px 0px 1em 1em; float: right;" width="276"></p>
+            <p><strong>Immovable (Нерухомий):</strong></p>
+            <ul>
+                <li>Робить об'єкт статичним (не може рухатися чи обертатися).</li>
+                <li>Використовується для створення стін або нерухомих перешкод.</li>
+            </ul>
+            <p><br></p>
+            <p><strong>Density (Щільність):</strong></p>
+            <ul>
+                <li>Визначає масу об'єкта.</li>
+                <li>Більша щільність — важче зрушити об'єкт.</li>
+            </ul>
+            <p><br></p>
+            <p><strong>Friction (Тертя):</strong></p>
+            <ul>
+                <li>Визначає, наскільки легко об'єкт ковзає.</li>
+                <li>Вище значення — більше тертя.</li>
+            </ul>
+            <p><br></p>
+            <p><strong>Elasticity (Еластичність):</strong></p>
+            <ul>
+                <li>Показує, наскільки сильно об'єкт відскакує під час зіткнення.</li>
+                <li>Висока еластичність — сильний відскок.</li>
+            </ul>
+            <p><br></p>
+            <p><strong>Linear damping (Лінійне гасіння):</strong></p>
+            <ul>
+                <li>Як швидко об'єкт сповільнюється, якщо на нього не діє сила.</li>
+                <li>Низьке значення — об'єкт довго ковзатиме.</li>
+            </ul>
+            <p><br></p>
+            <p><strong>Angular damping (Кутове гасіння):</strong></p>
+            <ul>
+                <li>Як швидко об'єкт перестає обертатися.</li>
+                <li>Високе значення — швидке зупинення обертання.</li>
+            </ul>
+            <p><br></p>
+            <p><span style="background-color: transparent;">☝</span><strong
+                    style="color: rgb(230, 0, 0); background-color: transparent;">Запам'ятай:</strong> Налаштовуючи ці
+                параметри, можна створити об'єкт, який поводитися як легкий м'ячик чи важкий астероїд.</p>
+            <p><br></p>
+            <p><br></p>
+            <h2 class="ql-align-center">Відмінність Physics та Solid</h2>
+            <p><br></p>
+            <p><span style="background-color: transparent;">📢</span><strong
+                    style="background-color: transparent; color: rgb(230, 0, 0);">Зверни увагу:</strong> Поведінка
+                <strong style="color: rgb(255, 153, 0);">Physics</strong> несумісна з <strong
+                    style="color: rgb(255, 153, 0);">Solid</strong>.</p>
+            <p><br></p>
+            <p><img src="https://storage.googleapis.com/rep-edu/Game/Construct/Handuot%20%E2%84%9617/%D0%97%D0%BD%D1%96%D0%BC%D0%BE%D0%BA%20%D0%B5%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-01-07%20%D0%BE%2014.24.50.png"
+                    style="display: block; margin: auto;" width="418"></p>
+            <p class="ql-align-center"><br></p>
+            <p class="ql-indent-1">Поведінка <strong>Solid</strong> створює просту механіку для блокування руху
+                об'єктів. Однак, <strong>Physics</strong> і <strong>Solid</strong> не взаємодіють між собою.</p>
+            <ul>
+                <li class="ql-indent-1"><strong>Physics</strong> використовує складні моделі взаємодії (враховує сили,
+                    масу, імпульси).</li>
+                <li class="ql-indent-1"><strong>Solid</strong> просто зупиняє об'єкт, без симуляції фізики.</li>
+            </ul>
+            <p><br></p>
+            <p><br></p>
+            <h2 class="ql-align-center">Physics -<strong> налаштування гравітації</strong></h2>
+            <p class="ql-align-center"><br></p>
+            <p>У фізичній поведінці гравітація ввімкнена за замовчуванням. Для космічних ігор, де гравітація не
+                потрібна, її можна вимкнути за допомогою коду.</p>
+            <p><br></p>
+            <p>У всіх обʼєктів з поведінкою Physics доступна дія <strong style="color: rgb(0, 138, 0);">Set World
+                    Gravity</strong>, яка дозволяє встановити силу гравітації. </p>
+            <p><br></p>
+            <p><img src="https://storage.googleapis.com/rep-edu/Game/Construct/Handuot%20%E2%84%9617/%D0%97%D0%BD%D1%96%D0%BC%D0%BE%D0%BA%20%D0%B5%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-01-07%20%D0%BE%2014.33.34.png"
+                    style="display: block; margin: auto;" width="243"></p>
+            <p><br></p>
+            <p><span style="background-color: transparent;">🔎</span><strong
+                    style="color: rgb(153, 51, 255); background-color: transparent;">Цікаво: </strong></p>
+            <ul>
+                <li>При значенні гравітації = 0 можна симулювати умови космосу, де об'єкти рухаються за інерцією. </li>
+                <li>Якщо ви хочете симулювати умови на різних планетах, то можна також ставити різні значення
+                    гравітації. Наприклад, на Землі гравітація у <span
+                        style="background-color: rgb(255, 255, 255); color: rgb(31, 31, 31);">&nbsp;2,6 раза</span><span
+                        style="background-color: rgb(255, 255, 255); color: rgb(4, 12, 40);"> більша ніж на
+                        Марсі.</span></li>
+            </ul>
+            <p><br></p>
+            <p><br></p>
+            <h2 class="ql-align-center">Функція <strong>Include Event Sheet</strong></h2>
+            <p class="ql-align-center"><br></p>
+            <p><strong>Include Event Sheet</strong> — це функція в Construct 3, яка дозволяє підключати код з одного
+                аркуша подій (Event Sheet) до іншого. Вона спрощує управління кодом у великих проєктах, де багато
+                рівнів, функцій або механік.</p>
+            <p><br></p>
+            <p><span style="background-color: transparent;">☝</span><strong
+                    style="color: rgb(230, 0, 0); background-color: transparent;">Запам'ятай:</strong> Замість
+                дублювання однакових подій для різних рівнів, можна створити окремий аркуш подій і приєднати його до
+                потрібних рівнів.</p>
+            <p><br></p>
+            <p><br></p>
+            <p>🤔 <strong style="color: rgb(0, 102, 204);">Подумай:</strong></p>
+            <ol>
+                <li>Як зробити об'єкт нерухомим у фізичній поведінці?</li>
+                <li>Що таке гравітація у Physics, і як її вимкнути?</li>
+                <li>Чим відрізняються <strong>Force</strong> (сила) та <strong>Impulse</strong> (імпульс) у фізиці?</li>
+                <li>Для чого потрібна функція <strong>Include Event Sheet</strong>?</li>
+                <li>Як <strong>Linear damping</strong> впливає на рух об'єкта?</li>
+            </ol>
+            <p><br></p>
+            <p>🎉 <strong style="color: rgb(0, 102, 204);">Відповіді на запитання (виділи мишею, щоб
+                    підглянути):</strong></p>
+            <ol>
+                <li><span style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Використати параметр
+                    </span><strong
+                        style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Immovable</strong><span
+                        style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);"> і встановити його значення
+                        в </span><strong
+                        style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Yes</strong><span
+                        style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">.</span></li>
+                <li><span style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Гравітація — це сила, яка
+                        тягне об'єкти донизу. Її можна вимкнути за допомогою події </span><strong
+                        style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Set World Gravity ➨
+                        0</strong><span style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">.</span>
+                </li>
+                <li><strong style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Force</strong><span
+                        style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);"> — тривалий вплив на
+                        об'єкт, а </span><strong
+                        style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Impulse</strong><span
+                        style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);"> — миттєвий поштовх.</span>
+                </li>
+                <li><span style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Функція </span><strong
+                        style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Include Event
+                        Sheet</strong><span style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">
+                        дозволяє повторно використовувати код з одного аркуша на інших рівнях.</span></li>
+                <li><strong style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Linear
+                        damping</strong><span style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">
+                        сповільнює рух об'єкта, якщо на нього не діє сила.</span></li>
+            </ol>
+            <p><br></p>
+        </div>
+    </div>
+</div>

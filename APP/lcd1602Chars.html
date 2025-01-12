@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LCD Symbol Editor</title>
+  <style>
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(5, 20px);
+      grid-template-rows: repeat(8, 20px);
+      gap: 2px;
+      margin: 10px;
+    }
+    .cell {
+      width: 20px;
+      height: 20px;
+      background-color: white;
+      border: 1px solid black;
+      cursor: pointer;
+    }
+    .cell.active {
+      background-color: black;
+    }
+    .output {
+      margin-top: 20px;
+    }
+    .row {
+        display: grid;  
+        grid-template-columns: repeat(8, 120px);
+    }
+  </style>
+</head>
+<body>
+  <h1>LCD Symbol Editor</h1>
+  
+  <div class="row" id="row1">
+    <div class="grid-container" id="row1-grid0"></div>
+    <div class="grid-container" id="row1-grid1"></div>
+    <div class="grid-container" id="row1-grid2"></div>
+    <div class="grid-container" id="row1-grid3"></div>
+    <div class="grid-container" id="row1-grid4"></div>
+    <div class="grid-container" id="row1-grid5"></div>
+    <div class="grid-container" id="row1-grid6"></div>
+    <div class="grid-container" id="row1-grid7"></div>
+  </div>
+  
+  <pre class="output" id="output"></pre>
+
+  <script>
+    const TOTAL_ROWS = 1; // Only 1 row remains
+    const GRIDS_PER_ROW = 8; // Updated to 8 grids per row
+
+    // Initialize grids
+    function initGrid() {
+      for (let row = 0; row < TOTAL_ROWS; row++) {
+        for (let i = 0; i < GRIDS_PER_ROW; i++) {
+          const container = document.getElementById(`row${row + 1}-grid${i}`);
+          for (let y = 0; y < 8; y++) {
+            for (let x = 0; x < 5; x++) {
+              const cell = document.createElement("div");
+              cell.classList.add("cell");
+              cell.dataset.x = x;
+              cell.dataset.y = y;
+              cell.addEventListener("click", () => toggleCell(cell, row, i));
+              container.appendChild(cell);
+            }
+          }
+        }
+      }
+    }
+
+    // Toggle cell state
+    function toggleCell(cell, row, grid) {
+      cell.classList.toggle("active");
+      updateByteArray();
+    }
+
+    // Generate byte array for each grid
+    function generateByteArray(gridId) {
+      const container = document.getElementById(gridId);
+      const cells = container.querySelectorAll(".cell");
+      const rows = Array.from({ length: 8 }, () => 0);
+
+      cells.forEach(cell => {
+        const x = +cell.dataset.x;
+        const y = +cell.dataset.y;
+        if (cell.classList.contains("active")) {
+          rows[y] |= (1 << (4 - x));
+        }
+      });
+
+      return rows;
+    }
+
+    // Update the output with Arduino code
+    function updateByteArray() {
+      let cppOutput = '';
+      cppOutput += '#include <Wire.h>\n';
+      cppOutput += '#include <LiquidCrystal_I2C.h>\n\n';
+      cppOutput += 'LiquidCrystal_I2C lcd(0x27, 16, 2);\n\n';
+      cppOutput += 'uint8_t chars[][8] = {\n';
+
+      for (let row = 0; row < TOTAL_ROWS; row++) {
+        for (let i = 0; i < GRIDS_PER_ROW; i++) {
+          const gridId = `row${row + 1}-grid${i}`;
+          const byteArray = generateByteArray(gridId);
+
+          cppOutput += `  { `;
+          for (let j = 0; j < 8; j++) {
+            cppOutput += byteArray[j];
+            if (j < 7) cppOutput += ', ';
+          }
+          cppOutput += ' },\n';
+        }
+      }
+
+      cppOutput += '};\n\n';
+      cppOutput += 'void setup() {\n';
+      cppOutput += '  lcd.begin();\n';
+      cppOutput += '  for(int x = 0; x < 8; x++) {\n';
+      cppOutput += '    lcd.createChar(x, chars[x]);\n';
+      cppOutput += '    lcd.setCursor(x, 0);\n';
+      cppOutput += '    lcd.write(x);\n';
+      cppOutput += '  }\n';
+      cppOutput += '}\n\n';
+      cppOutput += 'void loop() { }\n';
+
+      document.getElementById('output').textContent = cppOutput;
+    }
+
+    initGrid();
+  </script>
+</body>
+</html>
