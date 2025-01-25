@@ -21,6 +21,6 @@
 - 1
     - [Embedded Kids Pro](1/KP.md)
     - [Embedded Pro](1/PE.md)
-    - [GameDev Construct 3](C1/.md)
+    - [GameDev Construct 3](1/C.md)
     - [GameDev Unity Beginner](1/UB.md)
     - [GameDev Unity 2D](1/U2D.md)
