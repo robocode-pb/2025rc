@@ -4,7 +4,7 @@
 > Web -> `html` або `css` | Game -> `csharp` або `english` | Embedded -> `arduino`
 
 ## Тиждень 2025 року
-- 2
+- 3
     - [Embedded Kids Pro](3/KP.md)
     - [Embedded Pro](3/EP.md)
     - [GameDev Construct 3](2/C.html)
