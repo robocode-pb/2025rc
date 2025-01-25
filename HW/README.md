@@ -5,6 +5,13 @@
 
 ## Тиждень 2025 року
 - 2
+    - [Embedded Kids Pro](3/KP.md)
+    - [Embedded Pro](3/EP.md)
+    - [GameDev Construct 3](2/C.html)
+    - [GameDev Unity Beginner](2/UB.html)
+    - [GameDev Unity 2D](3/U2D.md)
+
+- 2
     - [Embedded Kids Pro](2/KP.md)
     - [Embedded Pro](2/EP.md)
     - [GameDev Construct 3](2/C.html)
