@@ -1,0 +1,281 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-header__header">
+            <p id="lesson-materials-topic-name" class="lesson-materials-topic-name">SpriteSheet і рівень. Коректний рух
+                персонажу</p>
+            <span class="close" id="close-lesson-materials">×</span>
+        </div>
+    </div>
+
+    <div class="modal-body" id="lesson-materials-content">
+        <h1 class="ql-align-center"><strong style="background-color: transparent;">Умовні позначення роздатки</strong>
+        </h1>
+        <p><span style="background-color: transparent;">Інструкція до роздатного матеріалу, або як зрозуміти про що тут
+                написано:</span></p>
+        <p><span style="background-color: transparent;">📢</span><strong
+                style="background-color: transparent; color: rgb(230, 0, 0);">Зверни увагу: </strong><strong
+                style="background-color: transparent;">- </strong><span style="background-color: transparent;">Після
+                такого значка буде вказано інформацію, на яку варто звернути увагу</span></p>
+        <p><span style="background-color: transparent;">☝</span><strong
+                style="background-color: transparent; color: rgb(230, 0, 0);">Запам'ятай: </strong><strong
+                style="background-color: transparent;">- </strong><span style="background-color: transparent;">Після
+                такого значка буде вказано інформацію, на яку варто вивчити</span></p>
+        <p><span style="background-color: transparent;">🤔</span><strong
+                style="background-color: transparent; color: rgb(0, 102, 204);">Подумай: - </strong><span
+                style="background-color: transparent;">Після такого значка буде вказано інформацію, яку варто
+                обдумати</span></p>
+        <p><span style="background-color: transparent;">🔎</span><strong
+                style="background-color: transparent; color: rgb(153, 51, 255);">Цікаво: - </strong><span
+                style="background-color: transparent;">Після такого значка буде вказано якийсь цікавий факт</span></p>
+        <p><span style="background-color: transparent;">👉</span><strong
+                style="background-color: transparent; color: rgb(255, 153, 0);">Завдання №</strong><span
+                style="background-color: transparent;"> - Після цього значка буде наведено завдання для
+                виконання.</span></p>
+        <p><strong style="background-color: transparent;">Примітка 1. </strong><span
+                style="background-color: transparent;">- Після такої позначки буде написано додаткову інформацію</span>
+        </p>
+        <p><br></p>
+        <p><a href="https://drive.google.com/drive/folders/1o-8LFQWTB_tvrPzTogcxZ_NQ10WySy5n?usp=drive_link"
+                target="_blank">Посилання на графіку для проєкту</a></p>
+        <p><br></p>
+        <h1 class="ql-align-center">Словник термінів</h1>
+        <p><strong style="background-color: transparent; color: rgb(153, 51, 255);">Sprite Sheet</strong><span
+                style="background-color: transparent;"> -</span> Це один великий графічний файл, що містить декілька
+            зображень спрайтів, які можна використовувати в іграх. Він допомагає оптимізувати графіку вашого проєкту.
+        </p>
+        <p><strong style="background-color: transparent; color: rgb(153, 51, 255);">Prefab - </strong>Це шаблон об'єкта,
+            який можна використовувати багато разів у різних місцях вашого проєкту. Префаби є ключовими для зниження
+            часу розробки.</p>
+        <p><strong style="background-color: transparent; color: rgb(153, 51, 255);">Pixel per Unit - </strong>Кількість
+            пікселів, які відповідають одній одиниці у Unity для коректного масштабування спрайтів. Це критично важливо
+            для збереження якості текстури.</p>
+        <p><strong style="background-color: transparent; color: rgb(153, 51, 255);">Slice - </strong>Процес розділення
+            спрайт листа на окремі спрайти для подальшого використання у вигляді функціональних елементів у грі, що
+            допомагає у зборі графіки.</p>
+        <p><br></p>
+        <h1 class="ql-align-center">Sprite Sheet / Спрайт лист</h1>
+        <p><strong style="color: rgb(230, 0, 0);">☝Запам'ятай: </strong></p>
+        <p><strong style="background-color: transparent;">Sprite sheet / Спрайт лист</strong> -<span
+                style="background-color: transparent;"> може містити в собі 2 і більше спрайтів, з якими можна працювати
+                окремо з кожним. Для роботи з таким спрайтом листом, потрібно вказати Unity те, що такий спрайт
+                складається з окремих частин.</span></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">📢</span><strong
+                style="background-color: transparent; color: rgb(230, 0, 0);">Зверни увагу:</strong></p>
+        <p>Таке об'єднання кількох спрайтів в один файл покращує продуктивності гри. Використання спрайт листів дозволяє
+            зменшити кількість запитів до графічного процесора, що позитивно впливає на FPS. </p>
+        <p><br></p>
+        <p><strong style="color: rgb(153, 51, 255);">🔎Цікаво: </strong> Відомо, що навіть великі студії, такі як
+            Nintendo, широко використовують спрайт листи у своїх проєктах для оптимізації, оскільки вони знижують
+            навантаження на пам'ять і підвищують продуктивність.</p>
+        <p><br></p>
+        <h1 class="ql-align-center">Ділення спрайт листа</h1>
+        <p>Щоб налаштувати спрайт лист, в Unity ви можете імпортувати зображення і змінити <strong
+                style="background-color: transparent;">Sprite Mode</strong> на <strong
+                style="background-color: transparent;">Multiple</strong> в інспекторі. Це дозволить увімкнути режим
+            розрізання.</p>
+        <p>1. Імпортуємо <strong style="background-color: transparent;">Sprite sheet</strong><span
+                style="background-color: transparent;"> (зображення). Тиснемо на нього, та переводимо погляд у вікно
+            </span><strong style="background-color: transparent;">Inspector</strong><span
+                style="background-color: transparent;">.</span></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%963/%D1%96%D0%BC%D0%BF%D0%BE%D1%80%D1%82%D1%83%D0%B2%D0%B0%D0%BD%D0%BD%D1%8F%20%D1%81%D0%BF%D1%80%D0%B0%D0%B8%CC%86%D1%82%20%D1%88%D1%96%D1%82.png"
+                style="display: block; margin: auto;" width="604"></p>
+        <p><br></p>
+        <p>2. Виставляємо властивість зображення <strong>Sprite Mode</strong> - <strong>Multiple</strong>.</p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%963/%D0%BD%D0%B0%D0%BB%D0%B0%D1%88%D1%82%D1%83%D0%B2%D0%B0%D0%BD%D0%BD%D1%8F%20%D1%81%D0%BF%D1%80%D0%B0%D0%B8%CC%86%D1%82%20%D0%BC%D0%BE%D0%B4.png"
+                style="display: block; margin: auto;" width="525"></p>
+        <p><br></p>
+        <p>3. Для того, щоб зберегти налаштування, тиснемо на кнопочку <strong>Apply.</strong></p>
+        <p>4. Тепер переходимо в <strong>Sprite Editor</strong>. Для цього потрібно натиснути на однойменну кнопку.</p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%963/%D0%BA%D0%BD%D0%BE%D0%BF%D0%B0%D0%BA%D0%B0%20%D1%81%D0%BF%D1%80%D0%B0%D0%B8%CC%86%D1%82%20%D0%B5%D0%B4%D1%96%D1%82%D0%BE%D1%80.png"
+                style="display: block; margin: auto;" width="305"></p>
+        <p><br></p>
+        <p>5. Відкриється вікно для редагування спрайтів, якщо ви виставили <strong>Sprite Mode</strong> як
+            <strong>Multiple, </strong>то вам буде доступна кнопка <strong>Slice / нарізати</strong> в лівому верхньому
+            куті вікна, натискаємо на неї. Тут обираємо потрібний режим нарізання. Скористаємося режимом <strong>Grid By
+                Cell Count / сітка за кількістю клітинок</strong>. <img
+                src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%963/%D0%BE%D0%B1%D0%B8%D1%80%D0%B0%D1%94%D0%BC%D0%BE%20%D1%80%D0%B5%D0%B6%D0%B8%D0%BC%20%D0%BD%D0%B0%D1%80%D1%96%D0%B7%D0%B0%D0%BD%D0%BD%D1%8F.png"
+                style="display: block; margin: auto;" width="500"></p>
+        <p><br></p>
+        <p><br></p>
+        <p>6. Цей режим зручний коли між спрайтами немає відстані, якраз, як в нашому випадку. Просто рахуємо кількість
+            рядків та колонок і вводимо ці значення в поле <strong>Column &amp; Row.</strong></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%963/%D0%BB%D0%BE%D0%B3%D1%96%D0%BA%D0%B0%20%D1%80%D0%BE%D0%B7%D1%80%D0%B0%D1%85%D1%83%D0%BD%D0%BA%D1%83%20%D0%BA%D0%BE%D0%BB%D0%BE%D0%BD%D0%BE%D0%BA%20%D1%82%D0%B0%20%D1%80%D1%8F%D0%B4%D0%BA%D1%96%D0%B2.png"
+                style="display: block; margin: auto;" width="551"></p>
+        <p><br></p>
+        <p>7. Натискаємо на кнопку <strong>Slice</strong>, потім на кнопку <strong>Apply</strong> в правому верхньому
+            куті вікна (або просто закриваємо вікно, та у вікні що сплине обираємо Apply).</p>
+        <h1 class="ql-align-center">Налаштування піксельної графіки</h1>
+        <p class="ql-align-center"><br></p>
+        <p>1. Параметр <strong style="background-color: transparent;">Pixel per unit</strong> вказує скільки пікселів з
+            вашого спрайта поміститься в одну одиничну клітинку в Unity. Це важливо для послідовності та стилю вашої гри
+            (щоб розмір пікселів всіх спрайтів був однаковим). Для налаштування цього параметрів вам потрібно натиснути
+            на спрайт, та у його властивостях знайти параметр <strong style="background-color: transparent;">Pixel per
+                unit.</strong></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%963/%D0%BF%D1%96%D0%BA%D1%81%D0%B5%D0%BB%D1%8C%20%D0%BF%D0%B5%D1%80%20%D1%8E%D0%BD%D1%96%D1%8C.png"
+                style="display: block; margin: auto;" width="504"></p>
+        <p><br></p>
+        <p class="ql-indent-1"><span style="background-color: transparent;">☝</span><strong
+                style="background-color: transparent; color: rgb(230, 0, 0);">Запам'ятай:</strong></p>
+        <p class="ql-indent-1"><span style="background-color: transparent;">Pixel per unit - ставимо таким чином - якщо
+                розмір спрайта&nbsp; 32х64, в цьому випадку вказуємо для параметра Pixel per unit найбільше число
+                (64).&nbsp;</span></p>
+        <p><br></p>
+        <p class="ql-indent-1"><span style="background-color: transparent;">📢</span><strong
+                style="background-color: transparent; color: rgb(230, 0, 0);">Зверни увагу:</strong></p>
+        <p class="ql-indent-1">Інколи розмір спрайта може бути вказаний некоректно. В такому випадку, Pixel per unit
+            треба підбирати відносно вже доданих спрайтів у проєкт.</p>
+        <p class="ql-indent-1"><br></p>
+        <p class="ql-indent-1"><span style="background-color: transparent;">📢</span><strong
+                style="background-color: transparent; color: rgb(230, 0, 0);">Зверни увагу: </strong>Для даної графіки
+            налаштуйте <strong>Pixel per unit</strong> на 32 або на 64, за бажанням, це не є критичним для нашого
+            завдання.</p>
+        <p class="ql-align-center"><br></p>
+        <p class="ql-align-center"><br></p>
+        <p>2. Зміна параметра <strong style="background-color: transparent;">Filter Mode</strong> на <strong
+                style="background-color: transparent;">Point (no filter)</strong> допоможе уникнути спотворення та
+            розмиття ваших спрайтів: це важливо, щоб зберегти піксельну графіку у первозданному вигляді. Це дозволяє
+            досягти чіткого відображення текстур в піксельних іграх.</p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%963/%D1%84%D1%96%D0%BB%D1%82%D1%80%20%D0%BC%D0%BE%D0%B4%D0%B5.png"
+                style="display: block; margin: auto;" width="552"></p>
+        <p><br></p>
+        <p>3. <span style="background-color: transparent;">Параметр </span><strong
+                style="background-color: transparent;">Format </strong><span
+                style="background-color: transparent;">встановлює яку схему кольору використовувати для наших спрайтів.
+                Для цієї графіки вказуємо </span><strong style="background-color: transparent;">RGBA 32 bit.</strong>
+        </p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%963/%D1%84%D0%BE%D1%80%D0%BC%D0%B0%D1%82.png"
+                style="display: block; margin: auto;" width="527"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">📢</span><strong
+                style="background-color: transparent; color: rgb(230, 0, 0);">Зверни увагу: </strong>Щоб в інспекторі
+            налаштувати властивості зображення, потрібно натискати на саме на зображення, а не на його частини:</p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%963/%D0%9A%D1%83%D0%B4%D0%B8%20%D0%BF%D0%BE%D1%82%D1%80%D1%96%D0%B1%D0%BD%D0%BE%20%D0%BD%D0%B0%D1%82%D0%B8%D1%81%D0%BA%D0%B0%D1%82%D0%B8.png"
+                style="display: block; margin: auto;" width="370"></p>
+        <p><br></p>
+        <h1 class="ql-align-center"><br></h1>
+        <h1 class="ql-align-center">Побудова рівня</h1>
+        <p class="ql-align-center"><br></p>
+        <p>Коли спрайт розділений на частини, ви можете легко вибрати окремі елементи та розмістити їх у вашій сцені.
+        </p>
+        <p><span style="background-color: transparent;">📢</span><strong
+                style="color: rgb(230, 0, 0); background-color: transparent;">Зверни увагу: </strong>Щоб "розгорнути"
+            спрайт натисніть на стрілочку біля нарізаного зображення.</p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%963/%D1%80%D0%BE%D0%B7%D0%B3%D0%BE%D1%80%D0%BD%D1%83%D1%82%D0%B8.png"
+                style="display: block; margin: auto;" width="124"> </p>
+        <p><span style="background-color: transparent;">☝</span><strong
+                style="color: rgb(230, 0, 0); background-color: transparent;">Запам'ятай: </strong>Під час використання
+            <strong style="background-color: transparent;">Move Tool</strong> та утримання клавіші <strong
+                style="background-color: transparent;">Ctrl</strong> обʼєкти будуть переміщуватися по сітці.</p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%963/%D0%BC%D1%83%D0%B2%20%D1%82%D1%83%D0%BB.png"
+                style="display: block; margin: auto;"></p>
+        <p><br></p>
+        <h1 class="ql-align-center">Prefab</h1>
+        <p><strong>Prefab</strong> - це заготовка об'єкта. Коли у вас на сцені багато однакових обʼєктів, з однаковими
+            компонентами, слід створювати їх на основі Перфаба.</p>
+        <p><br></p>
+        <p>Наприклад, рівень на сцені побудований з однакових блоків. Ви можете просто дублювати обʼєкт (блок) та
+            будувати рівень, а можете створити префаб і дублювати вже префаб. Такий підхід дозволить легко редагувати
+            рівень.</p>
+        <p><br></p>
+        <p>Якщо потрібно змінити колір рівня, що побудований без <strong>Prefab</strong>, потрібно міняти кожен блок
+            вручну, якщо рівень побудований з <strong>префабів</strong>, достатньо змінити тільки його.</p>
+        <p><br></p>
+        <h2 class="ql-align-center">Створення Prefab</h2>
+        <p class="ql-align-center"><br></p>
+        <p>Спершу вам слід створити об'єкт на сцені, додавши до нього всі потрібні компоненти, для стін рівня це можуть
+            бути <strong style="background-color: transparent;">Rigidbody2D</strong> та <strong
+                style="background-color: transparent;">BoxCollider2D. </strong></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">📢</span><strong
+                style="color: rgb(230, 0, 0); background-color: transparent;">Зверни увагу:</strong></p>
+        <p>Налаштування параметра <span style="background-color: transparent;">Rigidbody2D</span> <strong
+                style="background-color: transparent;">Body Type</strong> = <strong>Static</strong> дозволить іншим
+            об'єктам взаємодіяти з блоком, не змінюючи його позиції.</p>
+        <p><br></p>
+        <p>Коли обʼєкт налаштований, просто перетягніть його з вікна <strong>Hierarchy </strong>до вікна
+            <strong>Project.</strong></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%963/%D1%81%D1%82%D0%B2%D0%BE%D1%80%D0%B5%D0%BD%D0%BD%D1%8F%20%D0%BF%D1%80%D0%B5%D1%84%D0%B0%D0%B1%D1%83.gif"
+                style="display: block; margin: auto;" width="549"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">☝</span><strong
+                style="color: rgb(230, 0, 0); background-color: transparent;">Запам'ятай:</strong> Префаби в юніті мають
+            ліворуч зафарбований синій кубик.</p>
+        <h1 class="ql-align-center"><br></h1>
+        <p class="ql-align-center"><br></p>
+        <p class="ql-align-center"><br></p>
+        <p><strong style="color: rgb(255, 153, 0);">👉Завдання: </strong>Створіть простий ігровий рівень, використовуючи
+            префаб.</p>
+        <p><a href="https://drive.google.com/drive/folders/1o-8LFQWTB_tvrPzTogcxZ_NQ10WySy5n?usp=drive_link"
+                target="_blank">Посилання на графіку для проєкту</a> (продубльоване на початку).</p>
+        <p><br></p>
+        <p>1. Створюємо перфаб блоку, додаємо на нього компоненти <strong
+                style="background-color: transparent;">Rigidbody2D</strong> та <strong
+                style="background-color: transparent;">BoxCollider2D. </strong>Налаштовуємо параметр <span
+                style="background-color: transparent;">Rigidbody2D</span> <strong
+                style="background-color: transparent;">Body Type</strong> = <strong>Static.</strong></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%963/%D0%BA%D0%BE%D0%BC%D0%BF%D0%BE%D0%BD%D0%B5%D0%BD%D1%82%D0%B8%20%D0%BD%D0%B0%20%D0%BF%D1%80%D0%B5%D1%84%D0%B0%D0%B1%D1%96.png"
+                style="display: block; margin: auto;" width="249"></p>
+        <p><br></p>
+        <p class="ql-indent-1">🌟 <strong style="color: rgb(153, 51, 255);">Підказка</strong>: якщо ви забули додати
+            якийсь компонент на префаб, то додавайте його <strong>не</strong> на обʼєкт на сцені, а безпосередньо на
+            обʼєкт префабу у вікні Project.</p>
+        <p class="ql-indent-1"><br></p>
+        <p>2. Копіюючи префаб клавішами <strong>Ctrl + D</strong>, побудуйте рівень. Затискайте клавішу
+            <strong>Ctrl</strong> коли перетягуєте обʼєкти по сцені, щоб активувати прив'язку до сітки.</p>
+        <p><strong style="background-color: transparent;">Примітка </strong><span
+                style="background-color: transparent;">- для прикладу рівень маленький, побудуйте його більшим, додайте
+                стіни та зробіть його цікавим.</span></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%963/%D0%BF%D1%80%D0%B8%D0%BA%D0%BB%D0%B0%D0%B4%20%D1%80%D1%96%D0%B2%D0%BD%D1%8F.png"
+                style="display: block; margin: auto;" width="251"></p>
+        <p><br></p>
+        <p><strong style="color: rgb(255, 153, 0);">👉Завдання: </strong></p>
+        <p>Додайте на рівень ігрового персонажа та реалізуйте керування персонажем по аналогії, як ви робили раніше, але
+            використовуйте блоки <strong>Rigidbody2D Move Position</strong> та <strong> Rigidbody2D Get
+                Position</strong>.</p>
+        <p><br></p>
+        <p>1. Налаштовуємо зображення персонажа: <strong>Pixel per unit</strong> - такий самий як на Spit Sheet рівня
+            (32 або 64). <strong>Filter Mode</strong> - Poin (no filter). <strong>Format</strong> - RGBA 32 bit.</p>
+        <p><br></p>
+        <p>2. Додаємо на персонажа компоненти <strong>Capsule Collider 2D</strong>, <strong>Rigidbody 2D </strong>та
+            <strong>Script Machine</strong> виставляємо в Rigidbody 2D <strong>Gravity Scale</strong> = 0.</p>
+        <p><br></p>
+        <p>3. Створюємо скрипт для керування персонажем, вішаємо скрипт на персонажа.</p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%963/%D0%BF%D1%80%D0%B8%D0%BA%D0%BB%D0%B0%D0%B4%20%D1%81%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D0%B0.png"
+                style="display: block; margin: auto;" width="728"></p>
+        <p><br></p>
+        <p><br></p>
+        <p><br></p>
+        <p>🤔 <strong style="color: rgb(0, 102, 204);">Подумай:</strong></p>
+        <p>1. Що таке Prefab?</p>
+        <p>2. Чи покращує продуктивність гри Sprite Sheet?</p>
+        <p>3. Як рухати обʼєкти по сітці?</p>
+        <p>4. Яка комбінація клавіш дублює обʼєкти в Unity?</p>
+        <p><br></p>
+        <p>🎉 <strong style="color: rgb(0, 102, 204);">Відповіді на запитання (виділи мишею, щоб підглянути):</strong>
+        </p>
+        <p>1. <span style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Prefab - це заготовка
+                обʼєкта.</span></p>
+        <p>2.<span style="color: rgb(255, 255, 0);"> </span><span
+                style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Так, такий підхід зменшує
+                навантаження під час малювання спарйтів.</span></p>
+        <p>3.<span style="color: rgb(255, 255, 255);"> </span><span
+                style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Потрібно затиснути клавішу Ctrl під
+                час перетягування обʼєкта.</span></p>
+        <p>4. <span style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Комбінація клавіш Ctrl + D
+                дублює обʼєкти.</span></p>
+    </div>
+</div>

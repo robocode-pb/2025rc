@@ -1,0 +1,643 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-header__header">
+            <p id="lesson-materials-topic-name" class="lesson-materials-topic-name">Знайомство із Unity Visual
+                Scripting. Візуальне програмування. Рух персонажу</p>
+            <span class="close" id="close-lesson-materials">×</span>
+        </div>
+    </div>
+
+    <div class="modal-body" id="lesson-materials-content">
+        <h1 class="ql-align-center"><strong style="background-color: transparent;">Умовні позначення роздатки</strong>
+        </h1>
+        <p><br></p>
+        <p><span style="background-color: transparent;">Інструкція до роздатного матеріалу, або як зрозуміти про що тут
+                написано:</span></p>
+        <p><span style="background-color: transparent;">📢</span><strong
+                style="background-color: transparent; color: rgb(230, 0, 0);">Зверни увагу: </strong><strong
+                style="background-color: transparent;">- </strong><span style="background-color: transparent;">Після
+                такого значка буде вказано інформацію, на яку варто звернути увагу</span></p>
+        <p><span style="background-color: transparent;">☝</span><strong
+                style="background-color: transparent; color: rgb(230, 0, 0);">Запам'ятай: </strong><strong
+                style="background-color: transparent;">- </strong><span style="background-color: transparent;">Після
+                такого значка буде вказано інформацію, на яку варто вивчити</span></p>
+        <p><span style="background-color: transparent;">🤔</span><strong
+                style="background-color: transparent; color: rgb(0, 102, 204);">Подумай: - </strong><span
+                style="background-color: transparent;">Після такого значка буде вказано інформацію, яку варто
+                обдумати</span></p>
+        <p><span style="background-color: transparent;">🔎</span><strong
+                style="background-color: transparent; color: rgb(153, 51, 255);">Цікаво: - </strong><span
+                style="background-color: transparent;">Після такого значка буде вказано якийсь цікавий факт</span></p>
+        <p><span style="background-color: transparent;">👉</span><strong
+                style="background-color: transparent; color: rgb(255, 153, 0);">Завдання №</strong><span
+                style="background-color: transparent;"> - Після цього значка буде наведено завдання для
+                виконання.</span></p>
+        <p><strong style="background-color: transparent;">Примітка 1. </strong><span
+                style="background-color: transparent;">- Після такої позначки буде написано додаткову інформацію</span>
+        </p>
+        <p><br></p>
+        <h1 class="ql-align-center"><strong style="background-color: transparent;">Словник термінів</strong></h1>
+        <p class="ql-align-center"><br></p>
+        <p><strong style="background-color: transparent; color: rgb(153, 0, 255);">Компонент</strong><span
+                style="background-color: transparent; color: rgb(14, 14, 14);"> (в Unity) — це спеціальна частина, яку
+                додають до об’єкта в грі, щоб надати йому нові властивості або можливості. Кожен компонент відповідає за
+                певну функцію, як, наприклад, рух, можливість створювати звук чи світло, і допомагає об’єктам
+                взаємодіяти з навколишнім середовищем у грі.</span></p>
+        <p><br></p>
+        <p><strong style="background-color: transparent; color: rgb(153, 0, 255);">Скрипт</strong><span
+                style="background-color: transparent; color: rgb(14, 14, 14);"> — це набір команд або інструкцій, які
+                “говорять” об’єкту в грі, що саме він має робити.&nbsp;</span></p>
+        <p><br></p>
+        <p><strong style="background-color: transparent; color: rgb(153, 0, 255);">Asset</strong><strong
+                style="background-color: transparent; color: rgb(14, 14, 14);"> </strong><span
+                style="background-color: transparent; color: rgb(14, 14, 14);">— це будь-який ресурс, який
+                використовується в грі, наприклад, картинка, звук, модель персонажа чи фон. Це матеріали, з яких
+                створюють візуальні та звукові елементи гри.</span></p>
+        <p><br></p>
+        <p><strong style="background-color: transparent; color: rgb(153, 0, 255);">Top-Down Game </strong><span
+                style="background-color: transparent; color: rgb(14, 14, 14);">— це гра, де гравець бачить усе зверху,
+                наче дивиться на ігровий світ з висоти. У таких іграх об’єкти, персонажі та локації показані “згори
+                вниз”. Це дозволяє легко оглядати всю карту або навколишнє середовище і контролювати персонажа,
+                рухаючись у різні сторони.</span></p>
+        <p><br></p>
+        <p><strong style="background-color: transparent; color: rgb(153, 0, 255);">Прототип гри </strong><span
+                style="background-color: transparent; color: rgb(14, 14, 14);">— це початкова, спрощена версія гри, яка
+                створюється для перевірки ідеї, механік або концепції. Прототип дозволяє побачити, чи цікава гра, чи є в
+                ній баланс, перш ніж створювати повну версію.</span></p>
+        <p><br></p>
+        <p><br></p>
+        <p class="ql-align-center"><br></p>
+        <h1 class="ql-align-center"><strong style="background-color: transparent;">Вбудовані примітивні sprites
+                (зображення) в Unity</strong></h1>
+        <p class="ql-align-center"><br></p>
+        <p><span style="background-color: transparent;">Створення масштабних ігор часто починається з прототипу. Для
+                протипування ігор, доречно використовувати прості спрайти, щоб не витрачати час на їх малювання. В Unity
+                є вбудований набір примітивних спрайтів (квадрати, кола, трикутники). Щоб створити такий спрайт, треба у
+                вікні </span><strong style="background-color: transparent;">Project </strong><span
+                style="background-color: transparent;">натиснути </span><strong
+                style="background-color: transparent;">ПКМ</strong><span style="background-color: transparent;">
+            </span><em style="background-color: transparent;">(правою кнопкою миші) </em><span
+                style="background-color: transparent;">Create -&gt; 2D -&gt; Sprites -&gt; обрати потрібний вам спрайт
+                серед запропонованих.</span></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image25.png"
+                style="display: block; margin: auto;" width="843"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">☝</span><strong
+                style="background-color: transparent; color: rgb(230, 0, 0);">Запам'ятай: </strong><strong
+                style="background-color: transparent;">Triangle</strong><span style="background-color: transparent;"> -
+                трикутник, </span><strong style="background-color: transparent;">Square</strong><span
+                style="background-color: transparent;"> - квадрат, </span><strong
+                style="background-color: transparent;">Circle</strong><span style="background-color: transparent;"> -
+                коло</span></p>
+        <p><br></p>
+        <p><br></p>
+        <h1 class="ql-align-center"><strong style="background-color: transparent;">Visual Scripting</strong></h1>
+        <p><strong style="background-color: transparent;">Visual Scripting - </strong><span
+                style="background-color: transparent;">це візуальна мова програмування. За допомогою логічних вузлів
+                (блоків), ви зможете створювати ланцюжки коду для своїх ігор.</span></p>
+        <p><br></p>
+        <h2 class="ql-align-center"><strong style="background-color: transparent;">Створення Script Graph</strong></h2>
+        <p class="ql-align-center"><br></p>
+        <p><span style="background-color: transparent;">Щоб створити </span><strong
+                style="background-color: transparent;">Visual Scripting</strong><span
+                style="background-color: transparent;">, потрібно у вікні </span><strong
+                style="background-color: transparent;">Project</strong><span style="background-color: transparent;">
+                натиснути </span><strong style="background-color: transparent;">ПКМ</strong><span
+                style="background-color: transparent;">, далі Create -&gt; Visual Scripting -&gt; Script Graph.</span>
+        </p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image36.png"
+                style="display: block; margin: auto;" width="392"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">У вас зʼявиться </span><strong
+                style="background-color: transparent;">Script Graph</strong><span
+                style="background-color: transparent;">, саме в ньому ми будемо писати код. Для прикладу, назвемо це
+                Graph “PlayerScript”.</span></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image32.png"
+                style="display: block; margin: auto;"></p>
+        <p><br></p>
+        <p><br></p>
+        <h2 class="ql-align-center"><strong style="background-color: transparent;">Як запустити скрипт в дію</strong>
+        </h2>
+        <p><span style="background-color: transparent;">Для того, щоб скрипт почав працювати, його потрібно додати на
+                якийсь обʼєкт. Це робиться дуже просто:</span></p>
+        <ol>
+            <li><span style="background-color: transparent;">Додаємо&nbsp; спеціальний компонент</span><strong
+                    style="background-color: transparent;"> Scrip Machine,&nbsp; </strong><span
+                    style="background-color: transparent;">цей компонент бере написаний вами скрипт, та змушує його
+                    працювати. Щоб додати компонент на обʼєкт, потрібно натиснути на цей обʼєкт на </span><strong
+                    style="background-color: transparent;">Scene</strong><span style="background-color: transparent;">,
+                    або знайти його в вікні </span><strong style="background-color: transparent;">Hierarchy,
+                </strong><span style="background-color: transparent;">далі у вікні </span><strong
+                    style="background-color: transparent;">Inspector </strong><span
+                    style="background-color: transparent;">натиснути на </span><strong
+                    style="background-color: transparent;">Add Component.</strong><img
+                    src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image16.png"
+                    style="display: block; margin: auto;" width="242"></li>
+            <li><span style="background-color: transparent;">Тепер, коли </span><strong
+                    style="background-color: transparent;">Scrip Machine</strong><span
+                    style="background-color: transparent;"> додано, натискаємо на кружечок, в полі </span><strong
+                    style="background-color: transparent;">Graph</strong><span style="background-color: transparent;">,
+                    та обираємо створений скрипт. Або, можна просто перетягнути свій скрипт у це поле.</span><img
+                    src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image13.png"
+                    style="display: block; margin: auto;" width="528"></li>
+        </ol>
+        <p><br></p>
+        <p><span style="background-color: transparent;">Готово! Скрипт додано, коли ви запустите гру, обʼєкт почне його
+                виконувати.</span></p>
+        <p><br></p>
+        <h2 class="ql-align-center"><strong style="background-color: transparent;">Як програмувати скрипт</strong></h2>
+        <p><span style="background-color: transparent;">Щоб програмувати, або редагувати скрипт, його потрібно відкрити.
+                Для цього, просто знайдіть його у вікні </span><strong
+                style="background-color: transparent;">Project</strong><span style="background-color: transparent;">, та
+                натисніть по ньому 2 рази </span><strong style="background-color: transparent;">ЛКМ </strong><span
+                style="background-color: transparent;">(лівою кнопкою миші). Перед вами відкриється поле для редагування
+                скрипта. Ви можете відкрите це вікно на весь екран для зручності.</span></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image6.png"
+                style="display: block; margin: auto;" width="751"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">Щоб додати сюди вузол (блок) коду, потрібно натиснути
+            </span><strong style="background-color: transparent;">ПКМ</strong><span
+                style="background-color: transparent;"> по робочій області, обрати </span><strong
+                style="background-color: transparent;">Add Node / додати вузол. </strong><span
+                style="background-color: transparent;">Зʼявиться віконечко для вибору вузлів. Ви можете шукати їх
+                вручну, або ж скористатися рядком пошуку.</span></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image12.png"
+                style="display: block; margin: auto;" width="262"></p>
+        <p><br></p>
+        <p><br></p>
+        <h1 class="ql-align-center"><strong style="background-color: transparent;">Компонент Transform</strong></h1>
+        <p><br></p>
+        <p><strong style="background-color: transparent;">Transform </strong><span
+                style="background-color: transparent;">- це основний компонент в Unity. Він є абсолютно на всіх
+                об'єктах. Цей компонент відповідає за позицію обʼєкта на сцені, за розмір обʼєкта та за те, як обʼєкт
+                повернутий.</span><img
+                src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image22.png"
+                style="display: block; margin: auto;" width="538"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">☝</span><strong
+                style="background-color: transparent; color: rgb(230, 0, 0);">Запам'ятай: </strong><strong
+                style="background-color: transparent;">- </strong><span style="background-color: transparent;">всі
+            </span><strong style="background-color: transparent;">властивості</strong><span
+                style="background-color: transparent;"> компонентів, можна змінювати через скрипт. </span><strong
+                style="background-color: transparent;">Властивості</strong><span style="background-color: transparent;">
+                - це як налаштування або параметри. Наприклад, у компонента </span><strong
+                style="background-color: transparent;">Transform </strong><span
+                style="background-color: transparent;">властивостями будуть Position, Rotation, Scale.</span></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">🤔</span><strong
+                style="background-color: transparent; color: rgb(0, 102, 204);">Подумай: </strong><span
+                style="background-color: transparent;">Якщо Transform відповідає за позицію обʼєкта, чи можна тоді з
+                його допомогою реалізувати рух обʼєкта?</span></p>
+        <p><br></p>
+        <p><br></p>
+        <h1 class="ql-align-center"><strong style="background-color: transparent;">Як створювати теки</strong></h1>
+        <p><span style="background-color: transparent;">У великих проєктах міститься багато різних асетів
+                (</span><strong style="background-color: transparent;">Asset</strong><span
+                style="background-color: transparent;">): скриптів, зображень тощо. Щоб не загубитися в усьому
+                різноманітті, потрібно все сортувати по теках, та давати всім обʼєктам відповідні назви.</span></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">📢</span><strong
+                style="background-color: transparent; color: rgb(230, 0, 0);">Зверни увагу: </strong><span
+                style="background-color: transparent;">Теки та всі інші обʼєкти варто називати виключно англійською
+                мовою.</span></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">Для того, щоб створити теку, потрібно у вікні </span><strong
+                style="background-color: transparent;">Project </strong><span
+                style="background-color: transparent;">натиснути </span><strong
+                style="background-color: transparent;">ПКМ </strong><span style="background-color: transparent;">Create
+                -&gt; Folder. У вас зʼявиться тека (Folder), тепер можна написати їх назву, наприклад </span><strong
+                style="background-color: transparent;">Scripts.</strong><img
+                src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image9.png"
+                style="display: block; margin: auto;"></p>
+        <p><span style="background-color: transparent;">📢</span><strong
+                style="background-color: transparent; color: rgb(230, 0, 0);">Зверни увагу: </strong><span
+                style="background-color: transparent;">Ви завжди зможете змінити назву теки, для цього натисніть по ній
+            </span><strong style="background-color: transparent;">ЛКМ</strong><span
+                style="background-color: transparent;"> (лівою кнопною миші), далі оберіть </span><strong
+                style="background-color: transparent;">Rename / перейменувати.</strong></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">☝</span><strong
+                style="background-color: transparent; color: rgb(230, 0, 0);">Запам'ятай: </strong><span
+                style="background-color: transparent;">Варто робити під кожну групу обʼєктів свою теку, тоді буде легко
+                орієнтуватися в проєкті. Також, дуже часто, над одною грою працює багато людей, тому, назви повинні бути
+                зрозумілі всім. Не варто називати теку цифрою, або одною буквою. Краще дати “говорючу” назву. Наприклад,
+                тека для зображень, може називатися як </span><strong
+                style="background-color: transparent;">Images</strong><span style="background-color: transparent;">,
+            </span><strong style="background-color: transparent;">Sprites</strong><span
+                style="background-color: transparent;">, </span><strong
+                style="background-color: transparent;">Textures</strong><span
+                style="background-color: transparent;">.</span></p>
+        <p><br></p>
+        <h1 class="ql-align-center"><strong style="background-color: transparent;">Asset Store</strong></h1>
+        <p><span style="background-color: transparent;">Є спеціальна платформа, сайт, де ви можете взяти гарні спрайти
+                та багато іншого для своїх ігор - </span><strong style="background-color: transparent;">Unity Asset
+                Srore</strong><span style="background-color: transparent;">. Перейти на цю платформу можна прямо з
+                редактора Unity.</span></p>
+        <p><span style="background-color: transparent;">📢</span><strong
+                style="background-color: transparent; color: rgb(230, 0, 0);">Зверни увагу: </strong><span
+                style="background-color: transparent;">Переконайтеся, що ви підʼєднані до інтернету.</span></p>
+        <p><span style="background-color: transparent;">Щоб перейти до </span><strong
+                style="background-color: transparent;">Unity Asset Srore </strong><span
+                style="background-color: transparent;">потрібно натиснути на вкладку Window -&gt; Asset Store.</span>
+        </p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image30.png"
+                style="display: block; margin: auto;" width="579"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">Вам відкриється ось таке вікно, для зручності, перейдемо в
+                браузер, для цього натискаємо кнопку </span><strong style="background-color: transparent;">Search
+                online</strong></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image47.png"
+                style="display: block; margin: auto;" width="557"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">Вас перенесе на цей сайт: </span><a
+                href="https://assetstore.unity.com/" target="_blank"
+                style="background-color: transparent; color: rgb(17, 85, 204);">https://assetstore.unity.com</a></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image50.png"
+                style="display: block; margin: auto;" width="647"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">Після того як ви введете запит у пошуку, в фільтрах можна
+                налаштувати, показ тільки безплатних ассетів.</span></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image38.png"
+                style="display: block; margin: auto;" width="411"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">Коли ви знайшли цікавий вам набір, натискаємо на нього, далі
+                натискаємо на кнопку </span><strong style="background-color: transparent;">Add to My Assets.
+            </strong><span style="background-color: transparent;">У вікні що спливає приймаємо угоди ліцензії натиснувши
+                на кнопку </span><strong style="background-color: transparent;">Accept.</strong><img
+                src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image35.png"
+                style="display: block; margin: auto;" width="467"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">📢</span><strong
+                style="background-color: transparent; color: rgb(230, 0, 0);">Зверни увагу: </strong><span
+                style="background-color: transparent;">Кожна ліцензія має свої особливості використання. Так,
+                звантаживши безплатні ассети, зазвичай їх не можна розповсюджувати. Тобто ти не можеш продавати чи
+                дарувати ассети що звантажив, але можеш використати їх у своєму проєкті. Краще завжди читати умови
+                ліцензії.</span></p>
+        <p><br></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">Коли додали ассет на сайті, він зʼявиться і в Unity.</span></p>
+        <p><span style="background-color: transparent;">Заходимо на вкладку Window -&gt; Package Manager</span><img
+                src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image3.png"
+                style="display: block; margin: auto;" width="242"></p>
+        <p><span style="background-color: transparent;">Обираємо</span><strong style="background-color: transparent;">
+                My Assets / мої асети</strong><img
+                src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image29.png"
+                style="display: block; margin: auto;" width="498"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">Тут з'явиться ассет який ви додали.&nbsp;</span></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image33.png"
+                style="display: block; margin: auto;" width="533"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">Якщо його немає, натисніть на кнопку для
+                перезавантаження.</span></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image15.png"
+                style="display: block; margin: auto;" width="400"></p>
+        <p><br></p>
+        <p><em style="background-color: transparent;">Якщо ассет все одно не зʼявився, то ви щось не правильно зробити
+                на сайті.</em></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">Обравши потрібний асет, натискаємо </span><strong
+                style="background-color: transparent;">Download.&nbsp;</strong></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image21.png"
+                style="display: block; margin: auto;" width="402"></p>
+        <p><span style="background-color: transparent;">Після завантаження натискаємо </span><strong
+                style="background-color: transparent;">Import.</strong></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image46.png"
+                style="display: inline; margin: 0px 1em 1em 0px; float: left;" width="167"></p>
+        <p><br></p>
+        <p><br></p>
+        <p><br></p>
+        <p><br></p>
+        <p><br></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">В проєкті зʼявиться тека із завантаженими асетами.</span></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image39.png"
+                style="display: block; margin: auto;" width="461"></p>
+        <h1 class="ql-align-center"><br></h1>
+        <h2 class="ql-align-center"><strong style="background-color: transparent;">👉</strong><strong
+                style="background-color: transparent; color: rgb(255, 153, 0);">Завдання №1: </strong><strong
+                style="background-color: transparent;">Створити проєкт, додати асет ігрового персонажа, реалізувати
+                керування персонажем</strong></h2>
+        <p><span style="background-color: transparent;">1.</span> <span style="background-color: transparent;">Створюємо
+                2D проєкт.</span></p>
+        <p><span style="background-color: transparent;">2.</span> <span style="background-color: transparent;">Тепер
+                потрібно додати ассет нового персонажа, для цього відкриваємо вікно </span><strong
+                style="background-color: transparent;">Asset Store </strong><span
+                style="background-color: transparent;">(Window -&gt; Asset Store). Тиснемо кнопку </span><strong
+                style="background-color: transparent; color: rgb(0, 0, 255);">Search online</strong><span
+                style="background-color: transparent;">, нас переносить на сайт “Asset Store” (</span><a
+                href="https://assetstore.unity.com" target="_blank"
+                style="background-color: transparent; color: rgb(17, 85, 204);">https://assetstore.unity.com</a><span
+                style="background-color: transparent;">).&nbsp;</span></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image4.png"
+                style="display: block; margin: auto;" width="666"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">3.</span> <span style="background-color: transparent;">На сайті
+                шукаємо 2D спрайти, які нам подобаються. Можна скористатися рядочком пошуку. Наприклад дати запит
+            </span><strong style="background-color: transparent;">“Character” </strong><span
+                style="background-color: transparent;">(персонаж). Можете налаштувати, щоб вам пропонували тільки
+                безплатні асети.</span></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image28.png"
+                style="display: block; margin: auto;" width="490"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">4.</span> <span style="background-color: transparent;">Додаємо
+                асет, який сподобався. Упевніться, що це асет для 2D гри! Назва набору з прикладу: </span><strong
+                style="background-color: transparent; color: rgb(153, 0, 255);">2D Character - Astronaut</strong></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image27.png"
+                style="display: block; margin: auto;" width="678"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">5.</span> <span
+                style="background-color: transparent;">Повертаємося в редактор Unity. Відкриваємо вікно </span><strong
+                style="background-color: transparent;">Package</strong><span style="background-color: transparent;">
+            </span><strong style="background-color: transparent;">Manager</strong><span
+                style="background-color: transparent;"> (Window -&gt; Package Manager). Потрібно обрати </span><strong
+                style="background-color: transparent;">Packages: My Assets</strong><span
+                style="background-color: transparent;">.</span><img
+                src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image26.png"
+                style="display: block; margin: auto;" width="210"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">6.</span> <span style="background-color: transparent;">Знайти
+                асет, що ви додали. Якщо його немає, то оновлюємо список, натиснувши на кругову стрілку.</span></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image10.png"
+                style="display: block; margin: auto;"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">7.</span> <span style="background-color: transparent;">Коли
+                обрали потрібний асет, тиснемо </span><strong
+                style="background-color: transparent;">Download</strong><span style="background-color: transparent;">.
+                Після завершення звантаження натискаємо </span><strong
+                style="background-color: transparent;">Import.</strong></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image49.png"
+                style="display: block; margin: auto;" width="820"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">8.</span> <span style="background-color: transparent;">У вікні,
+                що спливає, також тиснемо </span><strong style="background-color: transparent;">Import</strong><span
+                style="background-color: transparent;">.</span><img
+                src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image8.png"
+                style="display: block; margin: auto;" width="259"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">9.</span> <span style="background-color: transparent;">До
+                проєкту додався набір асетів, в цьому випадку тека </span><strong
+                style="background-color: transparent; color: rgb(153, 0, 255);">“COPY SPRIGHT”</strong><span
+                style="background-color: transparent;">.&nbsp;</span></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image17.png"
+                style="display: block; margin: auto;" width="582"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">10.</span> <span style="background-color: transparent;">Наразі,
+                нам потрібен лише спрайт ігрового персонажа. Але ми завантажили й багато інших обʼєктів. Потрібно знайти
+                теку зі спрайтом персонажа. Шукайте теки з назвою </span><strong
+                style="background-color: transparent;">Sprite</strong><span style="background-color: transparent;">,
+            </span><strong style="background-color: transparent;">Character, Idle. </strong><span
+                style="background-color: transparent;">В даному пакеті асетів, спарйт що показаний в прикладі,
+                знаходиться за шляхом </span><strong
+                style="background-color: transparent; color: rgb(0, 0, 255);">Assets -&gt;COPY SPRIGHT-&gt;Comic Battle
+                Royale-&gt;2D Character - Astronaut-&gt;Variant
+                A-&gt;Sprites-&gt;Character-&gt;idle-&gt;down-&gt;01.png</strong></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image41.png"
+                style="display: block; margin: auto;" width="733"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">11.</span> <span style="background-color: transparent;">Щоб
+                створити ігрового персонажа, просто перетягуємо спрайт на сцену.</span></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image48.gif"
+                style="display: block; margin: auto;" width="338"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">12.</span> <span style="background-color: transparent;">Ми
+                будемо писати скрипт керування головним героєм, щоб скрипт працював, потрібно додати його на персонажа.
+                Тиснемо на персонажа на сцені. У вікні </span><strong style="background-color: transparent;">Inspector
+            </strong><span style="background-color: transparent;">натискаємо </span><strong
+                style="background-color: transparent;">Add Component. </strong><span
+                style="background-color: transparent;">Додаємо </span><strong
+                style="background-color: transparent;">Script Machine.</strong></p>
+        <p><span style="background-color: transparent;">13.</span> <span style="background-color: transparent;">У вікні
+            </span><strong style="background-color: transparent;">Project</strong><span
+                style="background-color: transparent;"> створімо теку “</span><strong
+                style="background-color: transparent;">Scripts</strong><span style="background-color: transparent;">”. В
+                цій теці буде зберігатися скрипт.</span></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image14.png"
+                style="display: block; margin: auto;" width="565"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">14.</span> <span style="background-color: transparent;">Тепер
+                створюємо скрипт (Create -&gt; Visual Scripting -&gt; Script Graph), назвемо його</span><strong
+                style="background-color: transparent;"> PlayerController</strong><span
+                style="background-color: transparent;">. Одразу встановіть скрипт на персонажа (перетягніть його в
+            </span><strong style="background-color: transparent;">Script Machine</strong><span
+                style="background-color: transparent;">).</span></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image37.png"
+                style="display: block; margin: auto;" width="561"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">15.</span> <span
+                style="background-color: transparent;">Відкриваємо скрипт та додаємо чотири блоки “</span><strong
+                style="background-color: transparent; color: rgb(153, 0, 255);">on Keyboard Input</strong><span
+                style="background-color: transparent;">”.</span></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image18.png"
+                style="display: block; margin: auto;" width="239"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">Цей блок відстежує натискання клавіш з клавіатури. Він має два
+                налаштування: </span><strong style="background-color: transparent;">Key</strong><span
+                style="background-color: transparent;"> - яка клавіша натиснута, </span><strong
+                style="background-color: transparent;">Action</strong><span style="background-color: transparent;"> - в
+                який момент натиску потрібно спрацювати. </span><strong
+                style="background-color: transparent; color: rgb(153, 51, 255);">Down</strong><span
+                style="background-color: transparent;"> - спрацьовує тільки в момент натискання клавіші, </span><strong
+                style="background-color: transparent; color: rgb(153, 51, 255);">Hold</strong><span
+                style="background-color: transparent;"> - спрацьовує постійно, поки клавіша затиснута, </span><strong
+                style="background-color: transparent; color: rgb(153, 51, 255);">Up</strong><span
+                style="background-color: transparent;"> - спрацьовує в момент відпускання клавіші.</span></p>
+        <p><span style="background-color: transparent;">16.</span> <span
+                style="background-color: transparent;">Налаштовуємо блоки так, щоб вони реагували на стрілочки з
+                клавіатури, та налаштовуємо параметр </span><strong style="background-color: transparent;">Action -
+            </strong><strong style="background-color: transparent; color: rgb(153, 51, 255);">Hold</strong><span
+                style="background-color: transparent;">.</span></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image44.png"
+                style="display: block; margin: auto;" width="85"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">17.</span> <span style="background-color: transparent;">Алгоритм
+                буде наступний: беремо позицію, на якій персонаж перебуває зараз, потім, зовсім трішки її змінюємо. Далі
+                пересуваємо персонажа на нову, змінену позицію.</span><img
+                src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image23.png"
+                style="display: block; margin: auto;" width="183"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">18.</span> <span style="background-color: transparent;">Блок
+                який бере поточну позицію персонажа - </span><strong
+                style="background-color: transparent; color: rgb(153, 0, 255);">Get position</strong><strong
+                style="background-color: transparent;">.</strong></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image34.png"
+                style="display: block; margin: auto;" width="252"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">19.</span> <span style="background-color: transparent;">Блок,
+                який встановлює нову позицію персонажа - </span><strong
+                style="background-color: transparent; color: rgb(153, 0, 255);">Set position</strong><strong
+                style="background-color: transparent;">.</strong></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image19.png"
+                style="display: block; margin: auto;" width="256"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">20.</span> <span
+                style="background-color: transparent;">&nbsp;Блок для додавання </span><strong
+                style="background-color: transparent;">позицій - </strong><strong
+                style="background-color: transparent; color: rgb(153, 0, 255);">add</strong><strong
+                style="background-color: transparent;">.&nbsp;</strong></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image42.png"
+                style="display: block; margin: auto;" width="247"></p>
+        <p><br></p>
+        <p><strong style="background-color: transparent;">A</strong><span style="background-color: transparent;"> - це
+                перший доданок, </span><strong style="background-color: transparent;">Б</strong><span
+                style="background-color: transparent;"> - другий доданок, який можна вказати вручну </span><strong
+                style="background-color: transparent; color: rgb(153, 0, 255);">(X, Y)</strong><span
+                style="background-color: transparent;">. Для руху вгору треба </span><strong
+                style="background-color: transparent;">збільшити</strong><span style="background-color: transparent;">
+            </span><strong style="background-color: transparent; color: rgb(153, 0, 255);">Y</strong><span
+                style="background-color: transparent;">, для руху вниз, треба </span><strong
+                style="background-color: transparent;">зменшити</strong><span style="background-color: transparent;">
+            </span><strong style="background-color: transparent; color: rgb(153, 0, 255);">Y</strong><span
+                style="background-color: transparent;">. Для руху </span><strong
+                style="background-color: transparent;">ліворуч</strong><span style="background-color: transparent;"> та
+            </span><strong style="background-color: transparent;">праворуч</strong><span
+                style="background-color: transparent;"> - міняємо </span><strong
+                style="background-color: transparent; color: rgb(153, 0, 255);">X</strong><span
+                style="background-color: transparent;">.</span></p>
+        <p><span style="background-color: transparent;">📢</span><strong
+                style="background-color: transparent; color: rgb(230, 0, 0);">Зверни увагу: </strong><strong
+                style="background-color: transparent;">- </strong><span style="background-color: transparent;">існують
+                різні блоки для додавання різних величин. Щоб додавати між собою позиції, потрібно використовувати
+            </span><span style="background-color: rgb(0, 0, 0);">&nbsp;</span><strong
+                style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">Add</strong><span
+                style="background-color: rgb(0, 0, 0);"> </span><span
+                style="background-color: rgb(0, 0, 0); color: rgb(183, 183, 183);">(in Math/Vector)</span><span
+                style="background-color: transparent;">.</span></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image45.png"
+                style="display: block; margin: auto;" width="274"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">21.</span> <span
+                style="background-color: transparent;">Зʼєднуємо блоки для руху в гору між собою.</span></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image7.png"
+                style="display: block; margin: auto;" width="516"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">🤔</span><strong
+                style="background-color: transparent; color: rgb(0, 102, 204);">Подумай: - </strong><span
+                style="background-color: transparent;">Спробуй пояснити своїми словами, як працює цей код.</span></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">22.</span> <span
+                style="background-color: transparent;">Реалізуймо рух персонажа вниз, ліворуч та праворуч.&nbsp;</span>
+        </p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image20.png"
+                style="display: block; margin: auto;" width="772"></p>
+        <p><br></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">📢</span><strong
+                style="background-color: transparent; color: rgb(230, 0, 0);">Зверни увагу: </strong><strong
+                style="background-color: transparent;">- </strong><span style="background-color: transparent;">для руху
+                ліворуч та вниз ми використовуємо блок </span><strong
+                style="background-color: transparent; color: rgb(153, 0, 255);">subtract / віднімання</strong><strong
+                style="background-color: transparent;">. A </strong><span style="background-color: transparent;">- число
+                від якого віднімаємо (</span><span
+                style="background-color: transparent; color: rgb(14, 14, 14);">Зменшуван</span><strong
+                style="background-color: transparent; color: rgb(14, 14, 14);">е</strong><span
+                style="background-color: transparent;">);</span><strong style="background-color: transparent;">&nbsp; Б
+            </strong><span style="background-color: transparent;">- число яке віднімаємо (</span><span
+                style="background-color: transparent; color: rgb(14, 14, 14);">Від’ємник</span><span
+                style="background-color: transparent;">).</span><img
+                src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image31.png"
+                style="display: block; margin: auto;" width="250"></p>
+        <p><span style="background-color: transparent;">23.</span> <span style="background-color: transparent;">Скрипт
+                готовий, можеш його протестувати!</span></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">🤔</span><strong
+                style="background-color: transparent; color: rgb(0, 102, 204);">Подумай: - </strong><span
+                style="background-color: transparent;">щоб змінити швидкість руху персонажа, потрібно збільшити або
+                зменшити знацення "0.05". Щому так?</span></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image1.png"
+                style="display: block; margin: auto;" width="768"></p>
+        <p><br></p>
+        <h1 class="ql-align-center"><strong style="background-color: transparent;">Корисна інформація про вікно
+                Project</strong></h1>
+        <p><br></p>
+        <h2 class="ql-align-center"><strong style="background-color: transparent;">Теки Assets та Packages.</strong>
+        </h2>
+        <p><span style="background-color: transparent;">Як ви вже знаєте, у вікні </span><strong
+                style="background-color: transparent;">Project </strong><span
+                style="background-color: transparent;">відображаються всі теки, які є в проєкті. Є дві основні теки в
+                Unity: </span><strong style="background-color: transparent;">Assets</strong><span
+                style="background-color: transparent;"> та </span><strong
+                style="background-color: transparent;">Packages.</strong></p>
+        <p><span style="background-color: transparent;">Тека </span><strong
+                style="background-color: transparent;">Assets </strong><span style="background-color: transparent;">- це
+                повністю ваш простір, саме в цій теці треба створювати скрипти, додавати спрайти та інші асети.</span>
+        </p>
+        <p><span style="background-color: transparent;">Тека </span><strong
+                style="background-color: transparent;">Packages </strong><span style="background-color: transparent;">-
+                це більш технічна тека, пізніше ви будете з нею взаємодіяти, але на разі, ми нічого з неї не видаляємо,
+                та нічого туди не додаємо.</span></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image40.png"
+                style="display: block; margin: auto;" width="777"></p>
+        <p><br></p>
+        <p><br></p>
+        <h2 class="ql-align-center"><strong style="background-color: transparent;">Налаштування вікна Project</strong>
+        </h2>
+        <p><span style="background-color: transparent;">Перетягуючи цей повзунок, ви можете змінювати розмір іконок. Це
+                може бути дуже корисним при деяких задачах.</span></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image11.png"
+                style="display: block; margin: auto;" width="558"></p>
+        <p><br></p>
+        <p><span style="background-color: transparent;">Можна змінити відображення вікна з двох колонок - на одну
+                колонку, це також може бути дуже зручним в багатьох випадках.</span><img
+                src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image43.png"
+                style="display: block; margin: auto;" width="744"></p>
+        <p><br></p>
+        <p><br></p>
+        <h2 class="ql-align-center"><strong style="background-color: transparent;">Шлях до поточної теки</strong></h2>
+        <p><span style="background-color: transparent;">В рядочку, зверху, показується шлях до теки, в якій ви зараз
+                знаходитеся. Це дозволяє зручно орієнтуватися у файлах вашого проєкту.</span></p>
+        <p><br></p>
+        <p><img src="https://storage.googleapis.com/rep-edu/Game/Unity%20Beginner/Handuot%20%E2%84%962/image5.png"
+                style="display: block; margin: auto;" width="674"></p>
+        <h1 class="ql-align-center"><br></h1>
+        <h1 class="ql-align-center"><span style="background-color: transparent;">Питання для самоперевірки</span></h1>
+        <ol>
+            <li><span style="background-color: transparent;">Яку вісь (X чи Y) треба змінювати, щоб персонаж рухався
+                    вгору?</span></li>
+            <li><span style="background-color: transparent;">Чи існують безплатні асети в Asset Store?</span></li>
+            <li><span style="background-color: transparent;">Які три основні параметри компонента Transform?</span></li>
+            <li><span style="background-color: transparent;">Чи можна змінювати параметри компонента трансформ через
+                    скрипт, наприклад Position?</span></li>
+        </ol>
+        <p class="ql-align-justify"><strong style="background-color: transparent;">Щоб перевірити свої відповіді, виділи
+                текст:</strong></p>
+        <ol>
+            <li><span style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Щоб персонаж рухався вгору,
+                    треба змінювати значення по вісі Y.</span></li>
+            <li><span style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">&nbsp;В Asset Store існують
+                    як безплатні так і платні асети.</span></li>
+            <li><span style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Основні параметри компонента
+                    Transform - Position (позиція), Rotation (поворот), Scale (розмір).</span></li>
+            <li><span style="background-color: rgb(255, 255, 0); color: rgb(255, 255, 0);">Так, через скрипт можна
+                    змінювати всі параметри компонента Transform, зокрема Position.</span></li>
+        </ol>
+    </div>
+</div>
