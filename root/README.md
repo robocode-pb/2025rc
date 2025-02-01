@@ -1,2 +1,3 @@
 Усі проєкти робокотиків
-TODO: push projects from notebooks
+
+[IT start](ITstart/README.md)
