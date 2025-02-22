@@ -2,5 +2,6 @@
 
 Номер компуктера:
 - [0](cats00.html)
+- [7](INDEX_7.html)
 - [11](cats11.html)
 - [12](CAT12.HTML)
