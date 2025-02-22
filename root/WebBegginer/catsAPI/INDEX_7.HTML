@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        Body{
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0)
+        }
+        img{
+            max-width: 100%;
+            border-radius: 10px;
+        }
+        button{
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 16px;
+        }
+        button:hover{
+            background-color: #45a045 ;
+        }
+    </style>
+</head>
+<body>
+    <h1>Random Cat Image</h1> <br>
+    <button onclick="fetchCatImage()">Get New Cat</button>
+    <br>
+    <img id="CatImage"src="" alt="Random Cat">
+    <script>
+        function fetchCatImage(){
+            fetch('https://api.thecatapi.com/v1/images/search')
+            .then(r => r.json())
+            .then(d =>{document.getElementById('CatImage').src = d[0].url;})
+            .catch(e => console.error('Error fetching cat image:', e))
+        }
+    </script>
+</body>
+</html>
