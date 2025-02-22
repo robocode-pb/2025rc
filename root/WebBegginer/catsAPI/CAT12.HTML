@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>КОТИКb</title>
+    <style>
+        body{
+            background-color: #68a0e0;
+            color: #310075;
+            text-align: center;
+        }
+        #cat{
+            height: 80vh;
+            border-radius: 10%;
+        }
+        button{
+            background-color: #e305a8;
+            color: #ffffff;
+            transition: background-color 2000ms ease;
+        }
+        button:hover{
+            background-color: rgb(112, 31, 187);
+        }
+
+    </style>
+</head>
+<body>
+    <h1>cats</h1>
+
+    <button onclick="skaf()">пошук котиків</button> <br>
+<img id="cat" src="" alt="">
+
+<script>
+ function skaf(){
+fetch('https://api.thecatapi.com/v1/images/search')
+.then(response =>response.json())
+.then(d=> document.getElementById('cat').src = d[0].url)
+}
+window.onload=skaf
+</script>
+
+
+
+
+    
+</body>
+</html>
