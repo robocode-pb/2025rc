@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cats</title>
+    <style>
+        body{
+            background-color: rgba(0, 132, 255, 0.363);
+            color: #ff0090de;
+            font-size: 6vh;
+            text-align: center;
+        }
+        img{
+            height: 50vh;
+            border-radius: 20px;       }
+        button{
+            background-color: #ff0090de;
+            color: #ffffff;
+            transition: background-color 3000ms ease ;
+
+            
+
+        }
+        button:hover{
+            background-color: #a504fdde;
+        }
+    </style>
+</head>
+<body>
+    <h1>котики</h1>
+    <button onclick="tymbochka()">пошук котиків</button>  <br>
+    <img id="cat" src="" alt="">  
+    <script>
+        function tymbochka(){
+            fetch('https://api.thecatapi.com/v1/images/search')
+            .then(r=>r.json())
+.then(d=>document.getElementById('cat').src =d[0].url)
+}
+window.onload =tymbochka;
+    </script>
+</body>
+</html>
