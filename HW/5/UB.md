@@ -1,0 +1,8 @@
+
+
+
+Variable - змінна
+Set, Get - встановити, отримати
+Move Towards - рухатись в напрямку
+Graph - дерево скрипта
+Completed
