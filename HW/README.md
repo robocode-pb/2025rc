@@ -4,6 +4,8 @@
 > Web -> `html` або `css` | Game -> `csharp` або `english` | Embedded -> `arduino`
 
 ## Тиждень 2025 року
+- 5
+    - [GameDev Unity Beginner](5/UB.md)
 - 4
     - [Embedded Kids Pro](3/KP.md)
     - [Embedded Pro](3/EP.md)
