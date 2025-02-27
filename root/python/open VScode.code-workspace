@@ -1,0 +1,21 @@
+{
+	"folders": [
+	  {
+		"path": "."
+	  }
+	],
+	"settings": {
+	  "files.exclude": {
+		"**/__pycache__": true,
+		"*.code-workspace": true
+	  }
+	},
+	"extensions": {
+		"recommendations": [
+			"qwtel.sqlite-viewer",
+			"ms-python.python",
+			"ms-vscode.live-server"
+		]
+	}
+  }
+  

@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #items-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .item {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            width: 200px;
+        }
+
+        .item img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .item h3 {
+            margin-top: 10px;
+            font-size: 1.2rem;
+        }
+
+        .item p {
+            margin-top: 5px;
+            font-size: 1rem;
+            color: #bbb;
+        }
+    </style>
+</head>
+<body>
+    <div id="items-container"></div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            fetch('http://127.0.0.1:8000/items')
+                .then(response => response.json())
+                .then(items => {
+                    const itemsContainer = document.getElementById('items-container');
+                    items.forEach(item => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.classList.add('item');
+
+                        const img = item.image_url ? `<img src="${item.image_url}" alt="${item.name}">` : '';
+                        const name = item.name;
+                        const price = `$${item.price}`;
+
+                        itemDiv.innerHTML = `${img}<h3>${name}</h3><p>${price}</p>`;
+                        itemsContainer.appendChild(itemDiv);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

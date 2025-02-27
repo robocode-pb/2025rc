@@ -1,0 +1,28 @@
+{
+	"folders": [
+	  {
+		"path": "."
+	  }
+	],
+	"settings": {
+	  "files.exclude": {
+		"**/__pycache__": true,
+		"open VScode fastApiSite.code-workspace": true
+	  }
+	},
+	// "tasks": {
+	// 			  "version": "2.0.0",
+	// 		"name": "Python: Module",
+	// 		"type": "shell",
+	// 		"request": "launch",
+	// 		"module": "uvicorn",
+	// 		"args": ["src.main:app","--reload"]
+		
+	// },
+	"extensions": {
+		"recommendations": [
+			"qwtel.sqlite-viewer"
+		]
+	}
+  }
+  
