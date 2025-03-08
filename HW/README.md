@@ -5,6 +5,7 @@
 
 ## Тиждень 2025 року
 - 5
+    - [Web backend](5/WB.md) 
     - [GameDev Unity Beginner](5/UB.md)
 - 4
     - [Embedded Kids Pro](3/KP.md)
