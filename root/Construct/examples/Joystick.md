@@ -1,4 +1,4 @@
-# [Joystick.c3p](blob:https://github.com/d1a6f58e-aaef-4f6f-94e9-46dbbba088de)
+# [Joystick.c3p](https://github.com/d1a6f58e-aaef-4f6f-94e9-46dbbba088de)
 
 ![image](https://github.com/user-attachments/assets/ac1e44c1-0d7b-4aa4-a093-7261b19289e9)
 
