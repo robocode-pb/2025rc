@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <title>ESP32 + HC-05 Controller</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      text-align: center;
+      margin: 0;
+      padding-bottom: 200px;
+      font-family: sans-serif;
+    }
+
+    h2 {
+      margin: 20px 0;
+    }
+
+    button {
+      font-size: 18px;
+      margin: 5px;
+      padding: 10px 20px;
+    }
+    @media (max-width: 650px) {
+      button {
+        font-size: 10px;
+        padding: 5px 8px;
+      }
+    }
+
+    #log {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 10vh;
+      overflow-y: auto;
+      background: #f0f0f0;
+      border-top: 2px solid #ccc;
+      padding: 10px;
+      font-family: monospace;
+      z-index: 9999;
+    }
+
+    img#cam {
+  height: 40vh;
+  width: auto;
+  max-width: 90%;
+  border: 2px solid #333;
+  margin: 10px auto;
+  display: block;
+  object-fit: contain;
+}
+
+
+    .controls {
+      height: 20vh;
+      display: grid;
+      grid-template-areas:
+        ".    up    ."
+        "left stop right"
+        ".   down   .";
+      grid-gap: 10px;
+      justify-content: center;
+      align-items: center;
+      margin: 20px auto;
+      padding: 10px;
+      max-width: 300px;
+    }
+
+    .controls > button {
+      width: 80px;
+      height: 80px;
+      font-size: 24px;
+      border-radius: 12px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .controls > button:active {
+      background-color: #0056b3;
+    }
+
+    button[data-dir="up"] { grid-area: up; }
+    button[data-dir="down"] { grid-area: down; }
+    button[data-dir="left"] { grid-area: left; }
+    button[data-dir="right"] { grid-area: right; }
+    button[data-dir="stop"] { grid-area: stop; }
+
+    @media (max-width: 600px) {
+      .controls > button {
+        width: 60px;
+        height: 60px;
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  ESP32 & HC-05 BLE/Serial Controller <br>
+
+  <button id="bleBtn" onclick="connectBLE()">🟦 Connect BLE</button>
+  <button id="serialBtn" onclick="connectSerial()">🟨 Connect Serial</button>
+  <input type="text" name="" id="connectImgInput" style="width: 15%;">
+  <button id="serialBtn" onclick="connectImg()">  Connect Stream</button>
+  <img id="cam" alt="Camera Feed">
+
+  <div id="controlPanel" >
+    <!-- <div id="controlPanel" style="display: none;"></div> -->
+    <div class="controls">
+      <button data-dir="up" onclick="sendCommand('F')">↑</button>
+      <button data-dir="left" onclick="sendCommand('L')">←</button>
+      <button data-dir="down" onclick="sendCommand('B')">↓</button>
+      <button data-dir="stop" onclick="sendCommand('S')">■</button>
+      <button data-dir="right" onclick="sendCommand('R')">→</button>
+    </div>
+  </div>
+
+  <div id="log">
+    <strong>📥 Incoming data:</strong><br>
+  </div>
+
+  <script>
+    const SERVICE_UUID = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
+    const TX_CHAR_UUID = '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
+    const RX_CHAR_UUID = '6e400003-b5a3-f393-e0a9-e50e24dcca9e';
+
+    let txChar = null;
+    let rxChar = null;
+    let serialWriter = null;
+    let serialReader = null;
+    const textEncoder = new TextEncoder();
+    const textDecoder = new TextDecoder();
+    let connectionType = null;
+
+    function log(message) {
+      const logEl = document.getElementById("log");
+      logEl.innerHTML = logEl.innerHTML + "<br>" + message;
+      console.log(message);
+    }
+
+    async function connectBLE() {
+      try {
+        const device = await navigator.bluetooth.requestDevice({
+          acceptAllDevices: true,
+          optionalServices: [SERVICE_UUID]
+        });
+        const server = await device.gatt.connect();
+        const service = await server.getPrimaryService(SERVICE_UUID);
+        txChar = await service.getCharacteristic(TX_CHAR_UUID);
+        rxChar = await service.getCharacteristic(RX_CHAR_UUID);
+        await rxChar.startNotifications();
+        rxChar.addEventListener("characteristicvaluechanged", event => {
+          const value = textDecoder.decode(event.target.value);
+          log("📥 [BLE] " + value.trim());
+        });
+
+        log("✅ Connected via BLE");
+        connectionType = "ble";
+        showControlPanel("ble");
+      } catch (err) {
+        log("❌ BLE connection failed: " + err);
+      }
+    }
+
+    async function connectSerial() {
+      try {
+        const port = await navigator.serial.requestPort();
+        await port.open({ baudRate: 9600 });
+        serialWriter = port.writable.getWriter();
+        serialReader = port.readable.getReader();
+
+        connectionType = "serial";
+        showControlPanel("serial");
+
+        log("✅ Connected via Serial");
+
+        while (true) {
+          const { value, done } = await serialReader.read();
+          if (done) break;
+          if (value) {
+            const text = textDecoder.decode(value);
+            log("📥 [Serial] " + text.trim());
+          }
+        }
+      } catch (err) {
+        log("❌ Serial connection failed: " + err);
+      }
+    }
+
+    async function sendCommand(cmd) {
+      if (connectionType === "ble" && txChar) {
+        await txChar.writeValue(textEncoder.encode(cmd));
+        log("➡️ [BLE] Sent: " + cmd);
+      } else if (connectionType === "serial" && serialWriter) {
+        await serialWriter.write(textEncoder.encode(cmd + "\n"));
+        log("➡️ [Serial] Sent: " + cmd);
+      } else {
+        log("⚠️ Not connected to any device");
+      }
+    }
+
+    function showControlPanel(type) {
+      document.getElementById("controlPanel").style.display = "block";
+      document.getElementById("bleBtn").style.display = (type === "serial") ? "none" : "inline-block";
+      document.getElementById("serialBtn").style.display = (type === "ble") ? "none" : "inline-block";
+    }
+
+    // 🎹 Bind arrow keys to commands
+    document.addEventListener("keydown", (e) => {
+      switch (e.key) {
+        case "ArrowUp":
+          sendCommand("F");
+          break;
+        case "ArrowDown":
+          sendCommand("B");
+          break;
+        case "ArrowLeft":
+          sendCommand("L");
+          break;
+        case "ArrowRight":
+          sendCommand("R");
+          break;
+        case " ":
+        case "Enter":
+          sendCommand("S");
+          break;
+      }
+    });
+
+    
+    const input = document.getElementById("connectImgInput");
+    const img = document.getElementById("cam");
+    input.value = location.hostname;
+    function connectImg() {
+        try {
+            img.src = "http://" + input.value + "/:81/stream";
+            log("Connected to stream at: " + img.src);
+        } catch (err) {
+            log("Failed to connect to stream: " + err);
+        }
+      img.src = "http://" + input.value + "/:81/stream";
+    //   img.onload = function() {
+    //     setTimeout(() => { img.src = "http://" + input + "/capture.jpg"; }, 1000);
+    //   };
+    }
+  </script>
+</body>
+</html>
