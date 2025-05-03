@@ -98,6 +98,8 @@
   </style>
 </head>
 <body>
+   <button onclick="reloadCam()">🔄 Перезапустити камеру</button>
+    <button style="font-size:12px;padding:4px 8px;" onclick="downloadPage()">⬇️ Завантажити як leoBT.html</button>  <br>
   ESP32 & HC-05 BLE/Serial Controller <br>
 
   <button id="bleBtn" onclick="connectBLE()">🟦 Connect BLE</button>
@@ -106,13 +108,7 @@
   <button onclick="connectImg()">  Connect Stream</button>
 
   <img id="cam" alt="Camera Feed">
-
-  <!-- Нові кнопки -->
-  <div>
-    <button onclick="reloadCam()">🔄 Перезапустити камеру</button>
-    <button style="font-size:12px;padding:4px 8px;" onclick="downloadPage()">⬇️ Завантажити як leoBT.html</button>
-  </div>
-
+  
   <div id="controlPanel">
     <div class="controls">
       <button data-dir="up" onclick="sendCommand('F')">↑</button>
@@ -142,7 +138,7 @@
 
     function log(message) {
       const logEl = document.getElementById("log");
-      logEl.innerHTML += "<br>" + message;
+      logEl.innerHTML = message "<br>"  logEl.innerHTM;
       console.log(message);
     }
 
