@@ -43,15 +43,14 @@
     }
 
     img#cam {
-  height: 40vh;
-  width: auto;
-  max-width: 90%;
-  border: 2px solid #333;
-  margin: 10px auto;
-  display: block;
-  object-fit: contain;
-}
-
+      height: 40vh;
+      width: auto;
+      max-width: 90%;
+      border: 2px solid #333;
+      margin: 10px auto;
+      display: block;
+      object-fit: contain;
+    }
 
     .controls {
       height: 20vh;
@@ -103,12 +102,18 @@
 
   <button id="bleBtn" onclick="connectBLE()">🟦 Connect BLE</button>
   <button id="serialBtn" onclick="connectSerial()">🟨 Connect Serial</button>
-  <input type="text" name="" id="connectImgInput" style="width: 15%;">
-  <button id="serialBtn" onclick="connectImg()">  Connect Stream</button>
+  <input type="text" id="connectImgInput" style="width: 15%;">
+  <button onclick="connectImg()">  Connect Stream</button>
+
   <img id="cam" alt="Camera Feed">
 
-  <div id="controlPanel" >
-    <!-- <div id="controlPanel" style="display: none;"></div> -->
+  <!-- Нові кнопки -->
+  <div>
+    <button onclick="reloadCam()">🔄 Перезапустити камеру</button>
+    <button style="font-size:12px;padding:4px 8px;" onclick="downloadPage()">⬇️ Завантажити як leoBT.html</button>
+  </div>
+
+  <div id="controlPanel">
     <div class="controls">
       <button data-dir="up" onclick="sendCommand('F')">↑</button>
       <button data-dir="left" onclick="sendCommand('L')">←</button>
@@ -137,7 +142,7 @@
 
     function log(message) {
       const logEl = document.getElementById("log");
-      logEl.innerHTML = logEl.innerHTML + "<br>" + message;
+      logEl.innerHTML += "<br>" + message;
       console.log(message);
     }
 
@@ -208,43 +213,48 @@
       document.getElementById("serialBtn").style.display = (type === "ble") ? "none" : "inline-block";
     }
 
-    // 🎹 Bind arrow keys to commands
     document.addEventListener("keydown", (e) => {
       switch (e.key) {
-        case "ArrowUp":
-          sendCommand("F");
-          break;
-        case "ArrowDown":
-          sendCommand("B");
-          break;
-        case "ArrowLeft":
-          sendCommand("L");
-          break;
-        case "ArrowRight":
-          sendCommand("R");
-          break;
-        case " ":
-        case "Enter":
-          sendCommand("S");
-          break;
+        case "ArrowUp": sendCommand("F"); break;
+        case "ArrowDown": sendCommand("B"); break;
+        case "ArrowLeft": sendCommand("L"); break;
+        case "ArrowRight": sendCommand("R"); break;
+        case " ": case "Enter": sendCommand("S"); break;
       }
     });
 
-    
     const input = document.getElementById("connectImgInput");
     const img = document.getElementById("cam");
     input.value = location.hostname;
+
     function connectImg() {
-        try {
-            img.src = "http://" + input.value + "/:81/stream";
-            log("Connected to stream at: " + img.src);
-        } catch (err) {
-            log("Failed to connect to stream: " + err);
-        }
-      img.src = "http://" + input.value + "/:81/stream";
-    //   img.onload = function() {
-    //     setTimeout(() => { img.src = "http://" + input + "/capture.jpg"; }, 1000);
-    //   };
+      try {
+        img.src = "http://" + input.value + ":81/stream";
+        log("Connected to stream at: " + img.src);
+      } catch (err) {
+        log("Failed to connect to stream: " + err);
+      }
+    }
+
+    function reloadCam() {
+      const url = img.src;
+      img.src = "";
+      setTimeout(() => {
+        img.src = url + "&t=" + new Date().getTime();
+        log("♻️ Камеру перезапущено");
+      }, 100);
+    }
+
+    function downloadPage() {
+      const htmlContent = document.documentElement.outerHTML;
+      const blob = new Blob([htmlContent], { type: "text/html" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "leoBT.html";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      log("📄 Сторінку завантажено як leoBT.html");
     }
   </script>
 </body>
