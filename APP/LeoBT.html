@@ -107,8 +107,8 @@
   <input type="text" id="connectImgInput" style="width: 15%;">
   <button onclick="connectImg()">  Connect Stream</button>
 
-  <img id="cam" alt="Camera Feed">
-  
+  <img id="cam" alt="Camera Feed" style="display: none;">
+  <input type="range" min="0" max="9" onchange="sendCommand(this.value)">
   <div id="controlPanel">
     <div class="controls">
       <button data-dir="up" onclick="sendCommand('F')">↑</button>
@@ -224,6 +224,7 @@
     input.value = location.hostname;
 
     function connectImg() {
+      img.style.display = 'block';
       try {
         img.src = "http://" + input.value + ":81/stream";
         log("Connected to stream at: " + img.src);
