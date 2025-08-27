@@ -1,0 +1,13 @@
+root/11/u2/PlatformerF.zip filter=lfs diff=lfs merge=lfs -text
+root/11/_OL/Su16UB11CatPlatformer.zip filter=lfs diff=lfs merge=lfs -text
+root/10/UB_Project3_Platformer_.zip filter=lfs diff=lfs merge=lfs -text
+root/10/UBKnife.zip filter=lfs diff=lfs merge=lfs -text
+root/10/Project2_SpaceShooter_UB.zip filter=lfs diff=lfs merge=lfs -text
+root/12/НД filter=lfs diff=lfs merge=lfs -text
+ЮНИТИ filter=lfs diff=lfs merge=lfs -text
+16.00 filter=lfs diff=lfs merge=lfs -text
+ГАМАН filter=lfs diff=lfs merge=lfs -text
+ПАВЛОЛ__24.09 filter=lfs diff=lfs merge=lfs -text
+НД filter=lfs diff=lfs merge=lfs -text
+ПАВЛОЛ.zip filter=lfs diff=lfs merge=lfs -text
+root/12/24.09 filter=lfs diff=lfs merge=lfs -text
