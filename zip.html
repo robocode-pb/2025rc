@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<title>Мої архіви</title>
+<style>
+  body {
+    background-color: #121212;
+    color: #e0e0e0;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  a {
+    color: #80cbc4;
+    text-decoration: none;
+    display: block;
+    margin: 5px 0;
+  }
+  a:hover { text-decoration: underline; }
+  h2 a {
+    color: #ffab40;
+    text-decoration: none;
+  }
+  h2 a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<h1>Мої архіви проєктів</h1>
+<div id="projects"></div>
+
+<script>
+(async ()=>{
+    const hostParts = window.location.hostname.split(".");
+    const owner = hostParts[0]; // robocode-pb
+    const repo = window.location.pathname.split("/").filter(Boolean)[0]; // 2025rc
+
+    const container = document.getElementById("projects");
+    const h1_link = `https://github.com/${owner}/${repo}`;
+    document.querySelector('h1').innerHTML = `<a href="${h1_link}" target="_blank">${h1_link}</a>`;
+
+    // Отримати список усіх папок у root
+    async function fetchFolders(path="root") {
+        const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        return data.filter(item => item.type === "dir").map(item => item.path);
+    }
+
+    async function fetchFiles(path){
+        const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        let files = [];
+        for(let item of data){
+            if(item.type==="file" && item.name.endsWith(".zip")){
+                files.push({name:item.name, download_url:item.download_url});
+            } else if(item.type==="dir"){
+                const subfiles = await fetchFiles(item.path);
+                files = files.concat(subfiles);
+            }
+        }
+        return files;
+    }
+
+    const folders = await fetchFolders("root");
+
+    for(let folder of folders){
+        const files = await fetchFiles(folder);
+        if(files.length){
+            const h2 = document.createElement("h2");
+            const folderLink = document.createElement("a");
+            folderLink.href = `https://github.com/${owner}/${repo}/tree/main/${folder}`;
+            folderLink.target="_blank";
+            folderLink.textContent = folder;
+            h2.appendChild(folderLink);
+            container.appendChild(h2);
+
+            files.forEach(file=>{
+                const link = document.createElement("a");
+                link.href=file.download_url;
+                link.textContent=file.name;
+                link.target="_blank";
+                container.appendChild(link);
+            });
+        }
+    }
+})();
+</script>
+</body>
+</html>
