@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ESP32 Controller</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            background: #000000;
+            color: #64deff;
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 300px;
+            border: 2px solid #333;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(5, 100px);
+            grid-gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 10px; border-radius:10% ;
+            font-size: 18px; border-style: none;
+            cursor: pointer; background-color: #4acfff;
+        }
+        #bS{
+            justify-self: end; /* Посуває кнопку вправо всередині grid-комірки */
+            width: 50px;
+            background-color: #cf0202;
+        }
+        .control-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+#slider {
+    writing-mode: bt-lr; /* вертикальний режим */
+    -webkit-appearance: slider-vertical; /* для Safari/Chrome */
+    width: 20px; /* товщина */
+    height: 300px;
+    background: #64deff;
+    cursor: pointer;
+}
+
+    </style>
+</head>
+
+<body>
+    <h1>😎Cool TaxEvasion Controller with BIBIbupboppaprap😎</h1>
+    <img id="cam" alt="Camera Feed">
+    <div class="control-wrapper">
+        
+        <div class="controls">
+        <button onclick="sendCommand('F')">↑</button>
+        <div></div>
+        <div></div>
+        <div></div>
+        <button onclick="sendCommand('B')">↓</button>
+        <button onclick="sendCommand('L')">←</button>
+        <div></div>
+        <div></div>
+        <button id="bS" onclick="sendCommand('S')">■</button>
+        <button onclick="sendCommand('R')">→</button>
+        <div></div>
+        <div></div>
+    </div>
+    <h2>Speed→</h2>
+    <input type="range"  id="slider"  max="9" min="0" onchange="sendCommand(this.value)">
+</div>
+    <script>
+
+        async function sendCommand(cmd) {
+            try {
+                await fetch(`/cmd?cmd=${cmd}`);
+                console.log("Sent via HTTP:", cmd);
+            } catch (err) {
+                console.error("HTTP send failed:", err);
+            }
+        }
+
+        // Автоматично підключити стрім камери
+        document.getElementById("cam").src = `http://${location.hostname}:81/stream`;
+    </script>
+</body>
+
+</html>

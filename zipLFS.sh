@@ -1,5 +1,5 @@
 #!/bin/bash
-# chmod +x zip LFS.sh
+# chmod +x zipLFS.sh
 
 # Мінімальний розмір файлу у мегабайтах
 MIN_SIZE_MB=50
