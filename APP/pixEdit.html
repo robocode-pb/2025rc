@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Міні-Редактор Матриці з Вибором Розміру</title>
+    <style>
+        :root {
+            --cell-size: 20px; 
+            --grid-color: #444;
+            --active-color: #000000;
+            --inactive-color: #ffffff;
+            --border-radius: 4px;
+            --primary-color: #0056b3;
+            --secondary-color: #28a745;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            min-height: 100vh; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1400px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .main-content {
+            display: flex;
+            gap: 30px;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .drawing-area {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .matrix-container {
+            border: 2px solid var(--grid-color);
+            line-height: 0;
+            display: inline-block;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            margin-bottom: 15px;
+            /* Динамічна зміна максимальної ширини для великих матриць */
+            max-width: calc(var(--cell-size) * 8 + 4px); 
+        }
+
+        .matrix-row {
+            display: flex;
+        }
+
+        .cell {
+            width: var(--cell-size);
+            height: var(--cell-size);
+            border: 1px solid #ddd;
+            background-color: var(--inactive-color);
+            cursor: pointer;
+            transition: background-color 0.1s;
+        }
+
+        .cell.active {
+            background-color: var(--active-color);
+        }
+
+        .controls-and-output {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            min-width: 500px;
+        }
+
+        .settings-controls, .frame-controls, .export-controls {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            background-color: #f9f9f9;
+        }
+
+        .setting-group {
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+            margin-bottom: 15px;
+        }
+
+        .setting-input-pair label {
+            display: block;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .setting-input-pair input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: var(--border-radius);
+            width: 60px;
+            text-align: center;
+        }
+
+        .apply-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-weight: bold;
+        }
+
+        .apply-btn:hover {
+            background-color: #004499;
+        }
+        
+        .frame-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+            max-height: 100px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .frame-button {
+            padding: 6px 10px;
+            border: 1px solid var(--primary-color);
+            background-color: #e6f0ff;
+            color: var(--primary-color);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            font-size: 0.9em;
+        }
+
+        .frame-button.active {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+        }
+
+        .delete-frame {
+            margin-left: 8px;
+            font-size: 1em;
+        }
+
+        .add-frame-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-weight: bold;
+        }
+
+        .add-frame-btn:hover {
+            background-color: #218838;
+        }
+
+        .export-btn {
+            background-color: #ffc107;
+            color: #333;
+            border: none;
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: background-color 0.2s;
+            width: 100%;
+        }
+
+        .export-btn:hover {
+            background-color: #e0a800;
+        }
+
+        textarea {
+            width: 100%;
+            height: 300px;
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: var(--border-radius);
+            box-sizing: border-box;
+            font-family: 'Consolas', 'Monospace';
+            background-color: #eee;
+            color: #000;
+            resize: vertical;
+        }
+
+        .info {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            border-radius: var(--border-radius);
+        }
+
+        @media (max-width: 1000px) {
+            .main-content {
+                flex-direction: column;
+            }
+            .drawing-area {
+                width: 100%;
+            }
+            .controls-and-output {
+                min-width: unset;
+                width: 100%;
+            }
+            .matrix-container {
+                margin: 0 auto 15px auto;
+            }
+            .setting-group {
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🎨 Універсальний Редактор Матриці (Arduino)</h1>
+        
+        <div class="main-content">
+            
+            <div class="drawing-area">
+                <p>Редагування: <strong id="currentFrameName">Кадр 1</strong></p>
+                <div id="matrix" class="matrix-container">
+                    </div>
+                <div class="info" style="display: none;">
+                    <p>Натисніть на клітинку, щоб змінити її стан (1/0).</p>
+                    <p>Поточний розмір: <span id="currentSize">8x16</span>. Масив генерується як: `[Кадр][Рядок (Y) * Cols + Стовпець (X)]`.</p>
+                </div>
+            </div>
+
+            <div class="controls-and-output">
+                
+                <div class="settings-controls">
+                    <h3>⚙️ Налаштування Розміру Матриці</h3>
+                    <div class="setting-group">
+                        <div class="setting-input-pair">
+                            <label for="inputCols">Стовпці (X):</label>
+                            <input type="number" id="inputCols" value="8" min="1" max="128">
+                        </div>
+                        <div class="setting-input-pair">
+                            <label for="inputRows">Рядки (Y):</label>
+                            <input type="number" id="inputRows" value="16" min="1" max="128">
+                        </div>
+                        <button id="applySizeBtn" class="apply-btn">Застосувати</button>
+                    </div>
+                    <small>Зміна розміру призведе до видалення всіх поточних кадрів.</small>
+                </div>
+
+                <div class="frame-controls">
+                    <h3>🖼️ Управління Кадрами</h3>
+                    <div id="frameList" class="frame-list">
+                        </div>
+                    <button id="addFrameBtn" class="add-frame-btn">➕ Додати Новий Кадр</button>
+                </div>
+
+                <div class="export-controls">
+                    <h3>💻 Експорт Коду (C/C++) (<a href="https://wokwi.com/projects/450294095556349953"target="_blank" rel="noopener noreferrer"
+                        >Wokwi онлайн симулятор</a>)</h3>
+                    <button id="exportCodeBtn" class="export-btn">📋 Скопіювати Код</button>
+                    <textarea id="outputCode" readonly placeholder="Згенерований код з'явиться тут..."></textarea>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Змінні, які тепер будуть динамічними
+        let COLS = 8;
+        let ROWS = 16;
+        
+        // DOM Елементи
+        const matrixContainer = document.getElementById('matrix');
+        const frameListElement = document.getElementById('frameList');
+        const addFrameBtn = document.getElementById('addFrameBtn');
+        const exportCodeBtn = document.getElementById('exportCodeBtn');
+        const outputCodeArea = document.getElementById('outputCode');
+        const currentFrameName = document.getElementById('currentFrameName');
+        const currentSizeDisplay = document.getElementById('currentSize');
+        const inputCols = document.getElementById('inputCols');
+        const inputRows = document.getElementById('inputRows');
+        const applySizeBtn = document.getElementById('applySizeBtn');
+
+        let animationData = []; 
+        let currentFrameIndex = 0;
+
+        // --- Core Matrix Logic ---
+
+        /**
+         * Ініціалізує нову матрицю поточного розміру (ROWS x COLS) білим кольором (false).
+         */
+        function createNewFrame() {
+            return Array(ROWS).fill(0).map(() => Array(COLS).fill(false));
+        }
+
+        /**
+         * Оновлює дисплей розміру та перерендеринг матриці.
+         */
+        function renderMatrix() {
+            matrixContainer.innerHTML = '';
+            
+            // Оновлення CSS змінної для коректного відображення розміру контейнера
+            matrixContainer.style.setProperty('--matrix-cols', COLS);
+            matrixContainer.style.maxWidth = `calc(${COLS} * var(--cell-size) + 4px)`;
+
+            currentFrameName.textContent = `Кадр ${currentFrameIndex + 1}`;
+            currentSizeDisplay.textContent = `${COLS}x${ROWS}`;
+            
+            const currentFrame = animationData[currentFrameIndex];
+
+            // Перевірка, чи існує поточний кадр (після resize він може бути порожнім)
+            if (!currentFrame || currentFrame.length !== ROWS || (currentFrame.length > 0 && currentFrame[0].length !== COLS)) {
+                // Якщо розмір не відповідає, ініціалізуємо новий кадр
+                animationData = [createNewFrame()];
+                currentFrameIndex = 0;
+                renderFrameList();
+                renderMatrix();
+                return;
+            }
+
+            // Малювання клітинок
+            currentFrame.forEach((row, y) => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'matrix-row';
+                row.forEach((isActive, x) => {
+                    const cell = document.createElement('div');
+                    cell.className = `cell ${isActive ? 'active' : ''}`;
+                    cell.dataset.x = x;
+                    cell.dataset.y = y;
+                    cell.addEventListener('mousedown', toggleCell); 
+                    rowDiv.appendChild(cell);
+                });
+                matrixContainer.appendChild(rowDiv);
+            });
+        }
+
+        /**
+         * Обробляє клік по клітинці матриці.
+         */
+        function toggleCell(event) {
+            const cell = event.target;
+            const x = parseInt(cell.dataset.x);
+            const y = parseInt(cell.dataset.y);
+
+            const currentFrame = animationData[currentFrameIndex];
+            currentFrame[y][x] = !currentFrame[y][x];
+
+            cell.classList.toggle('active', currentFrame[y][x]);
+
+            event.preventDefault();
+        }
+
+        // --- Frame Controls ---
+
+        function switchFrame(index) {
+            if (index >= 0 && index < animationData.length) {
+                currentFrameIndex = index;
+                renderFrameList(); 
+                renderMatrix();    
+            }
+        }
+
+        function addFrame() {
+            animationData.push(createNewFrame());
+            switchFrame(animationData.length - 1);
+        }
+
+        function deleteFrame(index) {
+            if (animationData.length <= 1) {
+                alert("Не можна видалити останній кадр!");
+                return;
+            }
+
+            if (confirm(`Ви впевнені, що хочете видалити Кадр ${index + 1}?`)) {
+                animationData.splice(index, 1);
+                
+                if (currentFrameIndex >= animationData.length) {
+                    currentFrameIndex = animationData.length - 1;
+                }
+                
+                switchFrame(currentFrameIndex);
+            }
+        }
+
+        function renderFrameList() {
+            frameListElement.innerHTML = '';
+            animationData.forEach((_, index) => {
+                const button = document.createElement('button');
+                button.className = `frame-button ${index === currentFrameIndex ? 'active' : ''}`;
+                button.textContent = `Кадр ${index + 1}`;
+                button.onclick = () => switchFrame(index);
+
+                if (animationData.length > 1) {
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'delete-frame';
+                    deleteBtn.textContent = '✖';
+                    deleteBtn.onclick = (e) => {
+                        e.stopPropagation(); 
+                        deleteFrame(index);
+                    };
+                    button.appendChild(deleteBtn);
+                }
+
+                frameListElement.appendChild(button);
+            });
+        }
+
+        // --- Resize Logic ---
+
+        function applyNewSize() {
+            const newCols = parseInt(inputCols.value);
+            const newRows = parseInt(inputRows.value);
+
+            if (isNaN(newCols) || isNaN(newRows) || newCols < 1 || newRows < 1) {
+                alert("Введіть коректні розміри (цілі числа > 0).");
+                return;
+            }
+
+            if (newCols === COLS && newRows === ROWS) return; // Нічого не змінилося
+
+            if (animationData.length > 1 || animationData[0].some(row => row.includes(true))) {
+                if (!confirm(`Зміна розміру (${COLS}x${ROWS} -> ${newCols}x${newRows}) призведе до СТИРАННЯ всіх поточних кадрів. Продовжити?`)) {
+                    // Скасувати
+                    inputCols.value = COLS;
+                    inputRows.value = ROWS;
+                    return;
+                }
+            }
+
+            // Застосовуємо новий розмір
+            COLS = newCols;
+            ROWS = newRows;
+            
+            // Скидаємо анімацію
+            animationData = [createNewFrame()];
+            currentFrameIndex = 0;
+            
+            renderFrameList();
+            renderMatrix();
+            outputCodeArea.value = ''; // Очищаємо код
+        }
+
+        // --- Export Logic ---
+
+        /**
+         * Генерує код C/C++ для анімації у компактному форматі (1/0, без переносів рядків).
+         */
+      /**
+         * Генерує код C/C++ для анімації у ТРИВИМІРНОМУ форматі [Кадр][Рядок][Стовпець] з компактним записом (1/0).
+         */
+        function generateCode() {
+            const frameCount = animationData.length;
+            
+            // Збираємо дані для всіх кадрів
+            const allFrameData = [];
+
+            animationData.forEach((frame, frameIndex) => {
+                const frameRowsData = [];
+                
+                // Проходимо по кожному рядку (Y)
+                frame.forEach((row, y) => {
+                    // Збираємо дані по стовпцях (X) у компактному форматі 1/0
+                    const rowValues = row.map(cell => cell ? '1' : '0').join(',');
+                    
+                    // Додаємо рядок з компактними значеннями
+                    frameRowsData.push(`{${rowValues}}`); 
+                });
+                
+                // Форматуємо дані кадру для вставки в C-масив
+                let frameBlock = '';
+                frameBlock += `{`;
+                frameBlock += frameRowsData.join(','); // Компактне об'єднання рядків
+                frameBlock += `}`;
+                
+                allFrameData.push(frameBlock);
+            });
+
+            // Збираємо фінальний рядок коду
+            let code = '';
+            code += '#include "GameBoy.h"\nGameBoy gb;\n\n';
+            code += `const int FRAME_COUNT = ${frameCount};\n`;
+            code += `const int MATRIX_ROWS = ${ROWS};\n`;
+            code += `const int MATRIX_COLS = ${COLS};\n`;
+            code += `bool animation[${frameCount}][${ROWS}][${COLS}] = {  // [Кадр][Рядок][Стовпець]\n`;
+            code += allFrameData.join(',\n'); 
+            code += `\n};\n\n`;
+            
+            code += `void setup() {\n  gb.begin(0);\n}\n\n`;
+            code += `// Приклад використання:\n`;
+            code += `void loop() {\n`;
+            code += `  for(int frame=0; frame < FRAME_COUNT; frame++) {\n`;
+            code += `    for(int y=0; y < MATRIX_ROWS; y++) {\n`;
+            code += `      for(int x=0; x < MATRIX_COLS; x++) {\n`;
+            code += `        gb.setLed(x, y, animation[frame][y][x]); \n`;
+            code += `      }\n`;
+            code += `    }\n`;
+            code += `    delay(200); // пауза між кадрами \n`;
+            code += `  }\n`;
+            code += `}\n`;
+
+            return code;
+        }
+
+        function copyCode() {
+            const code = generateCode();
+            outputCodeArea.value = code;
+            outputCodeArea.select();
+            
+            try {
+                document.execCommand('copy');
+                exportCodeBtn.textContent = '✅ Код Скопійовано!';
+            } catch (err) {
+                // Fallback to modern Clipboard API
+                navigator.clipboard.writeText(code).then(() => {
+                    exportCodeBtn.textContent = '✅ Код Скопійовано!';
+                }).catch(err => {
+                    exportCodeBtn.textContent = '❌ Помилка копіювання!';
+                    console.error('Помилка копіювання:', err);
+                });
+            }
+
+            setTimeout(() => {
+                exportCodeBtn.textContent = '📋 Скопіювати Код';
+            }, 2000);
+        }
+
+        // --- Ініціалізація та Обробники Подій ---
+
+        // Встановлюємо початкові значення
+        inputCols.value = COLS;
+        inputRows.value = ROWS;
+        
+        // Ініціалізуємо початковий стан
+        animationData.push(createNewFrame()); 
+        renderMatrix();
+        renderFrameList();
+
+        // Обробники подій
+        addFrameBtn.addEventListener('click', addFrame);
+        exportCodeBtn.addEventListener('click', copyCode);
+        applySizeBtn.addEventListener('click', applyNewSize);
+
+    </script>
+</body>
+</html>
