@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MP3 в Arduino PROGMEM Конвертер зі Стисненням</title>
+    <title>MP3 в Arduino PROGMEM Конвертер з Підсиленням</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -42,6 +42,8 @@
         .btn-listen:hover { background-color: #1e88e5; }
         .btn-download { background-color: #9C27B0; color: white; }
         .btn-download:hover { background-color: #8e24aa; }
+        .btn-copy-all { background-color: #ff9800; color: white; }
+        .btn-copy-all:hover { background-color: #e65100; }
         .btn:disabled { background-color: #cccccc; cursor: not-allowed; color: #666666; }
         
         .inputs-frame {
@@ -51,15 +53,16 @@
             margin: 15px 0;
             background: #fafafa;
         }
-        .grid { display: flex; justify-content: space-between; gap: 10px; }
+        .grid { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
         .grid-item { flex: 1; }
-        label { display: block; margin-bottom: 5px; font-size: 14px; color: #555; }
-        input[type="number"] {
+        label { display: block; margin-bottom: 5px; font-size: 14px; color: #555; font-weight: bold; }
+        input[type="number"], select {
             width: 100%;
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
+            font-size: 14px;
         }
         #file-info { text-align: center; color: #777; font-size: 14px; margin-bottom: 10px; word-break: break-all; }
         .status { text-align: center; font-weight: bold; margin: 10px 0; }
@@ -105,7 +108,7 @@
 <body>
 
 <div class="container">
-    <h2>📻 MP3 в Arduino Конвертер (Стиснення ADPCM 2:1)</h2>
+    <h2>📻 MP3 в Arduino Конвертер (ADPCM + Цифрове Підсилення)</h2>
     
     <input type="file" id="audio-file" accept="audio/*" style="display: none;">
     <button class="btn btn-select" onclick="document.getElementById('audio-file').click()">1. Вибрати аудіофайл</button>
@@ -122,41 +125,49 @@
                 <input type="number" id="end-time" value="4.0" step="0.1" min="0">
             </div>
         </div>
+        <div class="grid-item">
+            <label for="gain-value">🔊 Цифрове підсилення гучності (Gain):</label>
+            <select id="gain-value">
+                <option value="1.0">Оригінальна гучність (1x)</option>
+                <option value="1.5">Трохи гучніше (1.5x)</option>
+                <option value="2.0" selected>Гучно (2x) - Рекомендовано</option>
+                <option value="3.0">Дуже гучно (3x)</option>
+                <option value="4.0">Максимум (4x) - Можливе рипіння</option>
+            </select>
+        </div>
     </div>
 
     <button class="btn btn-listen" id="btn-listen" disabled>🔊 Послухати стиснений шматочок</button>
-    <button class="btn btn-download" id="btn-download" disabled>🚀 Скачати 'audio.h' (Стиснений)</button>
+    <button class="btn btn-download" id="btn-download" disabled>🚀 Скачати 'audio.h' (Окремий файл)</button>
+    <button class="btn btn-copy-all" id="btn-copy-all" disabled>📋 Скопіювати "Все в одному" (Скетч + Дані)</button>
 
     <div id="status-msg" class="status"></div>
 
     <div class="hint-frame">
         <div class="hint-title">
-            <span>💡 Код для Arduino IDE (Пін 3):</span>
-            <button class="copy-btn" onclick="copyArduinoCode()">Скопіювати код</button>
+            <span>💡 Базовий приклад використання:</span>
+            <button class="copy-btn" onclick="copyArduinoCode()">Скопіювати інструкцію</button>
         </div>
-<pre id="arduino-sample-code">#include "audio.h"
+<pre id="arduino-sample-code">// Пін підключення динаміка: Пін 3 та GND
+// Використовуйте резистор від 100 Ом, щоб не перевантажувати Arduino!
 
 void setup() {
-  // Налаштує таймери під розпакування та Пін 3
-  AUDIO_setup(); 
-  
-  // Запуск фонового відтворення
-  AUDIO_play(); 
+  AUDIO_setup(); // Налаштування таймерів
+  AUDIO_play();  // Запуск відтворення
 }
 
 void loop() {
-  // Звук грає сам завдяки перериванням!
+  // Звук грає асинхронно в перериваннях таймера
 }</pre>
     </div>
 </div>
 
 <script>
-    let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    let audioContext = null;
     let audioBuffer = null;
     let currentSource = null;
     let fileName = "";
 
-    // Кроки для таблиці ADPCM
     const stepTable = [
         7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 19, 21, 23, 25, 28, 31, 34, 37, 41, 45,
         50, 55, 60, 66, 73, 80, 88, 97, 107, 118, 130, 143, 157, 173, 190, 209, 230,
@@ -172,13 +183,19 @@ void loop() {
     const fileInfo = document.getElementById('file-info');
     const startTimeInput = document.getElementById('start-time');
     const endTimeInput = document.getElementById('end-time');
+    const gainSelect = document.getElementById('gain-value');
     const btnListen = document.getElementById('btn-listen');
     const btnDownload = document.getElementById('btn-download');
+    const btnCopyAll = document.getElementById('btn-copy-all');
     const statusMsg = document.getElementById('status-msg');
 
     fileInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (!file) return;
+
+        if (!audioContext) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
 
         fileName = file.name;
         fileInfo.innerText = `Декодування: ${fileName}...`;
@@ -186,6 +203,7 @@ void loop() {
         
         btnListen.disabled = true;
         btnDownload.disabled = true;
+        btnCopyAll.disabled = true;
 
         const reader = new FileReader();
         reader.onload = function(evt) {
@@ -196,6 +214,7 @@ void loop() {
                 
                 btnListen.disabled = false;
                 btnDownload.disabled = false;
+                btnCopyAll.disabled = false;
             }, function(err) {
                 fileInfo.innerText = "Помилка файлу. Оберіть інший трек.";
             });
@@ -203,7 +222,6 @@ void loop() {
         reader.readAsArrayBuffer(file);
     });
 
-    // Алгоритм стиснення в 4-бітний IMA ADPCM
     function encodeADPCM(samples16) {
         let encodedBytes = new Uint8Array(Math.ceil(samples16.length / 2));
         let predictor = 0;
@@ -229,7 +247,6 @@ void loop() {
             step >>= 1;
             if (diff >= step) { nibble |= 1; }
 
-            // Оновлюємо прогноз для наступного крока
             let vpdiff = stepTable[index] >> 3;
             if (nibble & 4) vpdiff += stepTable[index];
             if (nibble & 2) vpdiff += stepTable[index] >> 1;
@@ -245,7 +262,6 @@ void loop() {
             if (index < 0) index = 0;
             if (index > 88) index = 88;
 
-            // Пакуємо два 4-бітних числа в один 8-бітний байт
             if (!saveNibble) {
                 bufferByte = nibble & 0x0F;
                 saveNibble = true;
@@ -260,11 +276,11 @@ void loop() {
         return encodedBytes.subarray(0, outIdx);
     }
 
-    // Отримання даних з ресемплінгом у 16-бітні числа для стискача
     function getRawSamples16() {
         if (!audioBuffer) return null;
         const start = parseFloat(startTimeInput.value);
         const end = parseFloat(endTimeInput.value);
+        const gain = parseFloat(gainSelect.value); // Отримуємо коефіцієнт підсилення
         const targetSampleRate = 8000;
         const totalSamples = Math.floor((end - start) * targetSampleRate);
 
@@ -275,20 +291,22 @@ void loop() {
         for (let i = 0; i < totalSamples; i++) {
             const idx = Math.floor((start + (i / targetSampleRate)) * originalSR);
             let sampleF = (idx < chData.length) ? chData[idx] : 0;
-            samples16[i] = Math.max(-32768, Math.min(32767, sampleF * 32767));
+            
+            // Застосовуємо підсилення амплітуди
+            let amplifiedSample = sampleF * gain; 
+
+            // Обмежуємо значення, щоб уникнути переповнення типу даних
+            samples16[i] = Math.max(-32768, Math.min(32767, amplifiedSample * 32767));
         }
         return samples16;
     }
 
-    // Слухаємо імітацію розпакованого звуку
     btnListen.addEventListener('click', function() {
+        if (!audioContext) return;
         const samples16 = getRawSamples16();
         if (!samples16) return;
 
-        // Стискаємо
         const compressed = encodeADPCM(samples16);
-
-        // Декодуємо назад (емуляція того, що робитиме Arduino)
         const previewBuffer = audioContext.createBuffer(1, samples16.length, 8000);
         const channelData = previewBuffer.getChannelData(0);
 
@@ -329,49 +347,22 @@ void loop() {
         currentSource.start();
     });
 
-    btnDownload.addEventListener('click', function() {
-        const samples16 = getRawSamples16();
-        if (!samples16) return;
-
-        const compressed = encodeADPCM(samples16);
-
-        if (compressed.length > 28000) {
-            if (!confirm(`Навіть у стиснутому вигляді файл займає ${compressed.length} байт. Uno може зависнути. Продовжити?`)) return;
-        }
-
+    function generateCCode(samples16, compressed) {
         let hexLines = [];
         for (let i = 0; i < compressed.length; i += 16) {
             let chunk = [];
             for (let j = 0; j < 16 && (i + j) < compressed.length; j++) {
-                chunk.push(compressed[i + j]);
+                chunk.push("0x" + compressed[i + j].toString(16).toUpperCase().padStart(2, '0'));
             }
             hexLines.push("  " + chunk.join(", "));
         }
 
-        const code = `#ifndef AUDIO_H
-#define AUDIO_H
-
-#include <Arduino.h>
+        return `// Згенеровано за допомогою MP3 в Arduino Конвертера
 #include <avr/pgmspace.h>
 #include <avr/interrupt.h>
 
-// Кількість реальних звукових точок (семплів)
 const unsigned int soundLength = ${samples16.length}; 
-// Розмір стиснутого масиву в байтах
 const unsigned int compressedLength = ${compressed.length}; 
-
-const unsigned char soundData[] PROGMEM = {
-${hexLines.join(",\n")}
-};
-
-// --- СИСТЕМА ДЕКОДУВАННЯ ADPCM НА ЛЬОТУ ---
-volatile unsigned int samplePointer = 0; 
-volatile bool isPlaying = false;         
-
-// Змінні декодера
-static int16_t predictor = 0;
-static int8_t adpcm_index = 0;
-static bool nibble_toggle = false;
 
 const int16_t stepTable[89] PROGMEM = {
   7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 19, 21, 23, 25, 28, 31, 34, 37, 41, 45,
@@ -383,6 +374,17 @@ const int16_t stepTable[89] PROGMEM = {
 };
 
 const int8_t indexTable[16] PROGMEM = {-1, -1, -1, -1, 2, 4, 6, 8, -1, -1, -1, -1, 2, 4, 6, 8};
+
+const unsigned char soundData[] PROGMEM = {
+${hexLines.join(",\n")}
+};
+
+volatile unsigned int samplePointer = 0; 
+volatile bool isPlaying = false;         
+
+volatile int16_t predictor = 0;
+volatile int8_t adpcm_index = 0;
+volatile bool nibble_toggle = false;
 
 void AUDIO_play() {
   samplePointer = 0;
@@ -399,33 +401,26 @@ void AUDIO_stop() {
 
 void AUDIO_setup() {
   pinMode(3, OUTPUT);
-
-  // Таймер 2: ШІМ 62.5 кГц на піні 3
   TCCR2A = _BV(COM2B1) | _BV(WGM21) | _BV(WGM20);
   TCCR2B = _BV(CS20);
   OCR2B = 128;
 
-  // Таймер 1: Частота дискретизації 8000 Гц
   TCCR1A = 0; 
   TCCR1B = _BV(WGM12) | _BV(CS10);
-  OCR1A = 2000;
+  OCR1A = 2000; 
   TIMSK1 = _BV(OCIE1A);
-
   sei();
 }
 
-// Переривання на 8000 Гц з декодуванням ADPCM
 ISR(TIMER1_COMPA_vect) {
   if (isPlaying) {
     if (samplePointer < soundLength) {
       unsigned int bytePos = samplePointer >> 1;
       unsigned char rawByte = pgm_read_byte(&(soundData[bytePos]));
       
-      // Витягуємо потрібні 4 біти (нижні або верхні)
       unsigned char nibble = (!nibble_toggle) ? (rawByte & 0x0F) : (rawByte >> 4);
       nibble_toggle = !nibble_toggle;
 
-      // Декодування кроку
       int16_t step = pgm_read_word(&(stepTable[adpcm_index]));
       int16_t vpdiff = step >> 3;
       if (nibble & 4) vpdiff += step;
@@ -442,18 +437,26 @@ ISR(TIMER1_COMPA_vect) {
       if (adpcm_index < 0) adpcm_index = 0;
       if (adpcm_index > 88) adpcm_index = 88;
 
-      // Переводимо 16-бітне знакове число у 8-бітне беззнакове для ШІМ (0-255)
       OCR2B = (uint8_t)((predictor + 32768) >> 8);
-      
       samplePointer++;
     } else {
       isPlaying = false;
       OCR2B = 128;
     }
   }
-}
+}`;
+    }
 
-#endif // AUDIO_H`;
+    btnDownload.addEventListener('click', function() {
+        const samples16 = getRawSamples16();
+        if (!samples16) return;
+        const compressed = encodeADPCM(samples16);
+
+        if (compressed.length > 28000) {
+            if (!confirm(`Файл займає ${compressed.length} байт. Переконайтеся, що вистачить пам'яті. Продовжити?`)) return;
+        }
+
+        let code = `#ifndef AUDIO_H\n#define AUDIO_H\n\n${generateCCode(samples16, compressed)}\n\n#endif // AUDIO_H`;
 
         const blob = new Blob([code], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
@@ -466,13 +469,33 @@ ISR(TIMER1_COMPA_vect) {
         URL.revokeObjectURL(url);
 
         statusMsg.className = "status success";
-        statusMsg.innerText = `Стиснуто! Масив: ${compressed.length} байт.`;
+        statusMsg.innerText = `Збережено в audio.h! (${compressed.length} байт)`;
+    });
+
+    btnCopyAll.addEventListener('click', function() {
+        const samples16 = getRawSamples16();
+        if (!samples16) return;
+        const compressed = encodeADPCM(samples16);
+
+        if (compressed.length > 28000) {
+            if (!confirm(`Файл великий (${compressed.length} байт). Копіювати попри ризик браку пам'яті?`)) return;
+        }
+
+        let fullSketch = `${generateCCode(samples16, compressed)}\n\nvoid setup() {\n  AUDIO_setup();\n  AUDIO_play();\n}\n\nvoid loop() {\n  // Звук грає у фоні!\n}`;
+
+        navigator.clipboard.writeText(fullSketch).then(() => {
+            statusMsg.className = "status success";
+            statusMsg.innerText = "Готовий підсилений скетч скопійовано!";
+            alert("Повний скетч (разом із підсиленим звуковим масивом) скопійовано!");
+        }).catch(err => {
+            alert("Не вдалося скопіювати автоматично.");
+        });
     });
 
     function copyArduinoCode() {
         const codeText = document.getElementById('arduino-sample-code').innerText;
         navigator.clipboard.writeText(codeText).then(() => {
-            alert("Код успішно скопійовано!");
+            alert("Приклад скопійовано!");
         });
     }
 </script>
