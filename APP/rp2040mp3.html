@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MP3 в RP2040 PROGMEM Конвертер</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 580px;
+        }
+        h2 { text-align: center; color: #333; margin-top: 0; }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .btn-select { background-color: #4CAF50; color: white; }
+        .btn-select:hover { background-color: #43a047; }
+        .btn-listen { background-color: #2196F3; color: white; }
+        .btn-listen:hover { background-color: #1e88e5; }
+        .btn-download { background-color: #9C27B0; color: white; }
+        .btn-download:hover { background-color: #8e24aa; }
+        .btn-copy-all { background-color: #ff9800; color: white; }
+        .btn-copy-all:hover { background-color: #e65100; }
+        .btn:disabled { background-color: #cccccc; cursor: not-allowed; color: #666666; }
+        
+        .inputs-frame {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            background: #fafafa;
+        }
+        .grid { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+        .grid-item { flex: 1; }
+        label { display: block; margin-bottom: 5px; font-size: 14px; color: #555; font-weight: bold; }
+        input[type="number"], select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        #file-info { text-align: center; color: #777; font-size: 14px; margin-bottom: 10px; word-break: break-all; }
+        .status { text-align: center; font-weight: bold; margin: 10px 0; }
+        .success { color: #4CAF50; }
+
+        .hint-frame {
+            border: 1px solid #b3e5fc;
+            background-color: #e1f5fe;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 25px;
+        }
+        .hint-title {
+            font-weight: bold;
+            color: #0277bd;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .hint-frame pre {
+            background: #263238;
+            color: #f8f8f2;
+            padding: 12px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+            margin: 0;
+        }
+        .copy-btn {
+            background: #0277bd;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #01579b; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>📻 MP3 в RP2040 Конвертер (ADPCM + Підсилення)</h2>
+    
+    <input type="file" id="audio-file" accept="audio/*" style="display: none;">
+    <button class="btn btn-select" onclick="document.getElementById('audio-file').click()">1. Вибрати аудіофайл</button>
+    <div id="file-info">Файл не вибрано</div>
+
+    <div class="inputs-frame">
+        <div class="grid">
+            <div class="grid-item">
+                <label for="start-time">Початок (сек):</label>
+                <input type="number" id="start-time" value="0.0" step="0.1" min="0">
+            </div>
+            <div class="grid-item">
+                <label for="end-time">Кінець (сек):</label>
+                <input type="number" id="end-time" value="10.0" step="0.1" min="0">
+            </div>
+        </div>
+        <div class="grid-item">
+            <label for="gain-value">🔊 Цифрове підсилення гучності (Gain):</label>
+            <select id="gain-value">
+                <option value="1.0">Оригінальна гучність (1x)</option>
+                <option value="1.5">Трохи гучніше (1.5x)</option>
+                <option value="2.0" selected>Гучно (2x) - Рекомендовано</option>
+                <option value="3.0">Дуже гучно (3x)</option>
+                <option value="4.0">Максимум (4x) - Можливе рипіння</option>
+            </select>
+        </div>
+    </div>
+
+    <button class="btn btn-listen" id="btn-listen" disabled>🔊 Послухати стиснений шматочок</button>
+    <button class="btn btn-download" id="btn-download" disabled>🚀 Скачати 'audio.h' (Окремий файл)</button>
+    <button class="btn btn-copy-all" id="btn-copy-all" disabled>📋 Скопіювати "Все в одному" (Скетч + Дані)</button>
+
+    <div id="status-msg" class="status"></div>
+
+    <div class="hint-frame">
+        <div class="hint-title">
+            <span>💡 Базовий приклад використання на RP2040:</span>
+            <button class="copy-btn" onclick="copyArduinoCode()">Скопіювати інструкцію</button>
+        </div>
+<pre id="arduino-sample-code">// Пін підключення динаміка: будь-який ШІМ пін (наприклад, GP0 чи GP2) та GND
+// Використовуйте RC-фільтр або підсилювач (PAM8403) для гарного звуку!
+
+void setup() {
+  AUDIO_setup(); // Ініціалізація таймера RP2040 та ШІМ
+  AUDIO_play();  // Асинхронний старт
+}
+
+void loop() {
+  // Звук грає у фоні через апаратне переривання таймера
+}</pre>
+    </div>
+</div>
+
+<script>
+    let audioContext = null;
+    let audioBuffer = null;
+    let currentSource = null;
+    let fileName = "";
+
+    const stepTable = [
+        7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 19, 21, 23, 25, 28, 31, 34, 37, 41, 45,
+        50, 55, 60, 66, 73, 80, 88, 97, 107, 118, 130, 143, 157, 173, 190, 209, 230,
+        253, 279, 307, 337, 371, 408, 449, 494, 544, 598, 658, 724, 796, 876, 963,
+        1060, 1166, 1282, 1411, 1552, 1707, 1878, 2066, 2272, 2499, 2749, 3024, 3327,
+        3660, 4026, 4428, 4871, 5358, 5894, 6484, 7132, 7845, 8630, 9493, 10442, 11487,
+        12635, 13899, 15289, 16818, 18500, 20350, 22385, 24623, 27086, 29794, 32767
+    ];
+
+    const indexTable = [-1, -1, -1, -1, 2, 4, 6, 8, -1, -1, -1, -1, 2, 4, 6, 8];
+
+    const fileInput = document.getElementById('audio-file');
+    const fileInfo = document.getElementById('file-info');
+    const startTimeInput = document.getElementById('start-time');
+    const endTimeInput = document.getElementById('end-time');
+    const gainSelect = document.getElementById('gain-value');
+    const btnListen = document.getElementById('btn-listen');
+    const btnDownload = document.getElementById('btn-download');
+    const btnCopyAll = document.getElementById('btn-copy-all');
+    const statusMsg = document.getElementById('status-msg');
+
+    fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        if (!audioContext) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        fileName = file.name;
+        fileInfo.innerText = `Декодування: ${fileName}...`;
+        statusMsg.innerText = "";
+        
+        btnListen.disabled = true;
+        btnDownload.disabled = true;
+        btnCopyAll.disabled = true;
+
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            audioContext.decodeAudioData(evt.target.result, function(buffer) {
+                audioBuffer = buffer;
+                fileInfo.innerText = `${fileName} (${buffer.duration.toFixed(2)} сек)`;
+                // За замовчуванням ставимо ліміт 10 сек, але на RP2040 можна набагато більше
+                endTimeInput.value = Math.min(30.0, buffer.duration).toFixed(1);
+                
+                btnListen.disabled = false;
+                btnDownload.disabled = false;
+                btnCopyAll.disabled = false;
+            }, function(err) {
+                fileInfo.innerText = "Помилка файлу. Оберіть інший трек.";
+            });
+        };
+        reader.readAsArrayBuffer(file);
+    });
+
+    function encodeADPCM(samples16) {
+        let encodedBytes = new Uint8Array(Math.ceil(samples16.length / 2));
+        let predictor = 0;
+        let index = 0;
+        let bufferByte = 0;
+        let saveNibble = false;
+        let outIdx = 0;
+
+        for (let i = 0; i < samples16.length; i++) {
+            let sample = samples16[i];
+            let diff = sample - predictor;
+            let nibble = 0;
+
+            if (diff < 0) {
+                nibble = 8;
+                diff = -diff;
+            }
+
+            let step = stepTable[index];
+            if (diff >= step) { nibble |= 4; diff -= step; }
+            step >>= 1;
+            if (diff >= step) { nibble |= 2; diff -= step; }
+            step >>= 1;
+            if (diff >= step) { nibble |= 1; }
+
+            let vpdiff = stepTable[index] >> 3;
+            if (nibble & 4) vpdiff += stepTable[index];
+            if (nibble & 2) vpdiff += stepTable[index] >> 1;
+            if (nibble & 1) vpdiff += stepTable[index] >> 2;
+
+            if (nibble & 8) predictor -= vpdiff;
+            else predictor += vpdiff;
+
+            if (predictor > 32767) predictor = 32767;
+            else if (predictor < -32768) predictor = -32768;
+
+            index += indexTable[nibble];
+            if (index < 0) index = 0;
+            if (index > 88) index = 88;
+
+            if (!saveNibble) {
+                bufferByte = nibble & 0x0F;
+                saveNibble = true;
+            } else {
+                encodedBytes[outIdx++] = (nibble << 4) | bufferByte;
+                saveNibble = false;
+            }
+        }
+        if (saveNibble) {
+            encodedBytes[outIdx++] = bufferByte;
+        }
+        return encodedBytes.subarray(0, outIdx);
+    }
+
+    function getRawSamples16() {
+        if (!audioBuffer) return null;
+        const start = parseFloat(startTimeInput.value);
+        const end = parseFloat(endTimeInput.value);
+        const gain = parseFloat(gainSelect.value);
+        const targetSampleRate = 8000;
+        const totalSamples = Math.floor((end - start) * targetSampleRate);
+
+        const chData = audioBuffer.getChannelData(0);
+        const originalSR = audioBuffer.sampleRate;
+        const samples16 = new Int16Array(totalSamples);
+
+        for (let i = 0; i < totalSamples; i++) {
+            const idx = Math.floor((start + (i / targetSampleRate)) * originalSR);
+            let sampleF = (idx < chData.length) ? chData[idx] : 0;
+            let amplifiedSample = sampleF * gain; 
+            samples16[i] = Math.max(-32768, Math.min(32767, amplifiedSample * 32767));
+        }
+        return samples16;
+    }
+
+    btnListen.addEventListener('click', function() {
+        if (!audioContext) return;
+        const samples16 = getRawSamples16();
+        if (!samples16) return;
+
+        const compressed = encodeADPCM(samples16);
+        const previewBuffer = audioContext.createBuffer(1, samples16.length, 8000);
+        const channelData = previewBuffer.getChannelData(0);
+
+        let predictor = 0;
+        let index = 0;
+
+        for (let i = 0; i < samples16.length; i++) {
+            let byteIdx = Math.floor(i / 2);
+            let nibble = 0;
+            if (byteIdx < compressed.length) {
+                let b = compressed[byteIdx];
+                nibble = (i % 2 === 0) ? (b & 0x0F) : (b >> 4);
+            }
+
+            let step = stepTable[index];
+            let vpdiff = step >> 3;
+            if (nibble & 4) vpdiff += step;
+            if (nibble & 2) vpdiff += step >> 1;
+            if (nibble & 1) vpdiff += step >> 2;
+
+            if (nibble & 8) predictor -= vpdiff;
+            else predictor += vpdiff;
+
+            if (predictor > 32767) predictor = 32767;
+            if (predictor < -32768) predictor = -32768;
+
+            index += indexTable[nibble];
+            if (index < 0) index = 0;
+            if (index > 88) index = 88;
+
+            channelData[i] = predictor / 32768.0;
+        }
+
+        if (currentSource) { try { currentSource.stop(); } catch(e) {} }
+        currentSource = audioContext.createBufferSource();
+        currentSource.buffer = previewBuffer;
+        currentSource.connect(audioContext.destination);
+        currentSource.start();
+    });
+
+    function generateCCode(samples16, compressed) {
+        let hexLines = [];
+        for (let i = 0; i < compressed.length; i += 16) {
+            let chunk = [];
+            for (let j = 0; j < 16 && (i + j) < compressed.length; j++) {
+                chunk.push("0x" + compressed[i + j].toString(16).toUpperCase().padStart(2, '0'));
+            }
+            hexLines.push("  " + chunk.join(", "));
+        }
+
+        return `// Згенеровано за допомогою MP3 в RP2040 Конвертера
+#include <Arduino.h>
+
+// Оскільки це 32-бітна архітектура, ключове слово PROGMEM не обов'язкове, 
+// але модифікатор 'const' автоматично розміщує дані у Flash пам'яті RP2040.
+
+const unsigned int soundLength = ${samples16.length}; 
+const unsigned int compressedLength = ${compressed.length}; 
+
+const int16_t stepTable[89] = {
+  7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 19, 21, 23, 25, 28, 31, 34, 37, 41, 45,
+  50, 55, 60, 66, 73, 80, 88, 97, 107, 118, 130, 143, 157, 173, 190, 209, 230,
+  253, 279, 307, 337, 371, 408, 449, 494, 544, 598, 658, 724, 796, 876, 963,
+  1060, 1166, 1282, 1411, 1552, 1707, 1878, 2066, 2272, 2499, 2749, 3024, 3327,
+  3660, 4026, 4428, 4871, 5358, 5894, 6484, 7132, 7845, 8630, 9493, 10442, 11487,
+  12635, 13899, 15289, 16818, 18500, 20350, 22385, 24623, 27086, 29794, 32767
+};
+
+const int8_t indexTable[16] = {-1, -1, -1, -1, 2, 4, 6, 8, -1, -1, -1, -1, 2, 4, 6, 8};
+
+const unsigned char soundData[] = {
+${hexLines.join(",\n")}
+};
+
+// Визначення піна для аудіовиходу (Використовуйте ШІМ-здатні піни, наприклад, GP2)
+const int AUDIO_PIN = 2; 
+
+volatile unsigned int samplePointer = 0; 
+volatile bool isPlaying = false;         
+
+volatile int16_t predictor = 0;
+volatile int8_t adpcm_index = 0;
+volatile bool nibble_toggle = false;
+
+struct repeating_timer audio_timer;
+
+// Функція обробки переривання апаратного таймера RP2040 (8000 Гц)
+bool audio_timer_callback(struct repeating_timer *t) {
+  if (isPlaying) {
+    if (samplePointer < soundLength) {
+      unsigned int bytePos = samplePointer >> 1;
+      unsigned char rawByte = soundData[bytePos];
+      
+      unsigned char nibble = (!nibble_toggle) ? (rawByte & 0x0F) : (rawByte >> 4);
+      nibble_toggle = !nibble_toggle;
+
+      int16_t step = stepTable[adpcm_index];
+      int16_t vpdiff = step >> 3;
+      if (nibble & 4) vpdiff += step;
+      if (nibble & 2) vpdiff += step >> 1;
+      if (nibble & 1) vpdiff += step >> 2;
+
+      if (nibble & 8) predictor -= vpdiff;
+      else predictor += vpdiff;
+
+      if (predictor > 32767) predictor = 32767;
+      if (predictor < -32768) predictor = -32768;
+
+      adpcm_index += indexTable[nibble];
+      if (adpcm_index < 0) adpcm_index = 0;
+      if (adpcm_index > 88) adpcm_index = 88;
+
+      // ШІМ-дозвіл на RP2040 за замовчуванням 8 біт (0-255).
+      // Перетворюємо значення зі знакового 16-бітного в беззнакове 8-бітне.
+      int pwm_val = (predictor + 32768) >> 8;
+      analogWrite(AUDIO_PIN, pwm_val);
+      
+      samplePointer++;
+    } else {
+      isPlaying = false;
+      analogWrite(AUDIO_PIN, 128); // Повернення дифузора в нейтральне положення
+    }
+  }
+  return true; // Продовжувати роботу таймера
+}
+
+void AUDIO_play() {
+  samplePointer = 0;
+  predictor = 0;
+  adpcm_index = 0;
+  nibble_toggle = false;
+  isPlaying = true;
+}
+
+void AUDIO_stop() {
+  isPlaying = false;
+  analogWrite(AUDIO_PIN, 128);
+}
+
+void AUDIO_setup() {
+  pinMode(AUDIO_PIN, OUTPUT);
+  analogWriteFreq(100000); // Робимо несучу частоту ШІМ ультразвуковою (100 кГц) для усунення писку
+  analogWriteRange(255);   // 8 біт дозвіл
+  analogWrite(AUDIO_PIN, 128);
+
+  // Налаштовуємо апаратний таймер RP2040 на інтервал 125 мікросекунд (це рівно 8000 Гц)
+  add_repeating_timer_us(-125, audio_timer_callback, NULL, &audio_timer);
+}`;
+    }
+
+    btnDownload.addEventListener('click', function() {
+        const samples16 = getRawSamples16();
+        if (!samples16) return;
+        const compressed = encodeADPCM(samples16);
+
+        // Для 4 МБ ліміт безпеки значно вищий, ніж в UNO. Дозволяємо до 3.5 МБ.
+        if (compressed.length > 3500000) {
+            if (!confirm(`Файл дуже великий (${(compressed.length/1024/1024).toFixed(2)} МБ). Продовжити?`)) return;
+        }
+
+        let code = `#ifndef AUDIO_H\n#define AUDIO_H\n\n${generateCCode(samples16, compressed)}\n\n#endif // AUDIO_H`;
+
+        const blob = new Blob([code], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'audio.h';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        statusMsg.className = "status success";
+        statusMsg.innerText = `Збережено в audio.h! (${compressed.length} байт)`;
+    });
+
+    btnCopyAll.addEventListener('click', function() {
+        const samples16 = getRawSamples16();
+        if (!samples16) return;
+        const compressed = encodeADPCM(samples16);
+
+        let fullSketch = `${generateCCode(samples16, compressed)}\n\nvoid setup() {\n  AUDIO_setup();\n  AUDIO_play();\n}\n\nvoid loop() {\n  // Звук грає автоматично у фоні!\n}`;
+
+        navigator.clipboard.writeText(fullSketch).then(() => {
+            statusMsg.className = "status success";
+            statusMsg.innerText = "Готовий підсилений скетч для RP2040 скопійовано!";
+            alert("Повний скетч скопійовано!");
+        }).catch(err => {
+            alert("Не вдалося скопіювати автоматично.");
+        });
+    });
+
+    function copyArduinoCode() {
+        const codeText = document.getElementById('arduino-sample-code').innerText;
+        navigator.clipboard.writeText(codeText).then(() => {
+            alert("Приклад скопійовано!");
+        });
+    }
+</script>
+
+</body>
+</html>
